@@ -1,4 +1,5 @@
-[{
+[
+  {
     "id": 1,
     "first_name": "Huntington",
     "last_name": "Gernier",
@@ -9,7 +10,8 @@
     "room": 1,
     "status": "Check-out",
     "room_type": "Suite"
-  }, {
+  },
+  {
     "id": 2,
     "first_name": "Nert",
     "last_name": "Todarello",
@@ -20,7 +22,8 @@
     "room": 2,
     "status": "Check-out",
     "room_type": "Single Bed"
-  }, {
+  },
+  {
     "id": 3,
     "first_name": "Putnem",
     "last_name": "Crichley",
@@ -31,7 +34,8 @@
     "room": 3,
     "status": "Check-in",
     "room_type": "Double Bed"
-  }, {
+  },
+  {
     "id": 4,
     "first_name": "Julius",
     "last_name": "Godsal",
@@ -42,7 +46,8 @@
     "room": 4,
     "status": "In progress",
     "room_type": "Double Superior"
-  }, {
+  },
+  {
     "id": 5,
     "first_name": "Barny",
     "last_name": "Rubertelli",
@@ -53,7 +58,8 @@
     "room": 5,
     "status": "Cancelled",
     "room_type": "Suite"
-  }, {
+  },
+  {
     "id": 6,
     "first_name": "Fernande",
     "last_name": "Dorrell",
@@ -64,7 +70,8 @@
     "room": 6,
     "status": "Check-in",
     "room_type": "Single Bed"
-  }, {
+  },
+  {
     "id": 7,
     "first_name": "Clemens",
     "last_name": "Yallowley",
@@ -75,7 +82,8 @@
     "room": 7,
     "status": "Check-out",
     "room_type": "Double Bed"
-  }, {
+  },
+  {
     "id": 8,
     "first_name": "Bartie",
     "last_name": "Davy",
@@ -86,7 +94,8 @@
     "room": 8,
     "status": "Check-out",
     "room_type": "Double Superior"
-  }, {
+  },
+  {
     "id": 9,
     "first_name": "Tobye",
     "last_name": "Parbrook",
@@ -97,7 +106,8 @@
     "room": 9,
     "status": "In progress",
     "room_type": "Suite"
-  }, {
+  },
+  {
     "id": 10,
     "first_name": "Amity",
     "last_name": "Morten",
@@ -108,7 +118,8 @@
     "room": 1,
     "status": "In progress",
     "room_type": "Single Bed"
-  }, {
+  },
+  {
     "id": 11,
     "first_name": "Caddric",
     "last_name": "Infantino",
@@ -119,7 +130,8 @@
     "room": 1,
     "status": "Cancelled",
     "room_type": "Double Bed"
-  }, {
+  },
+  {
     "id": 12,
     "first_name": "Brooks",
     "last_name": "Sudell",
@@ -130,7 +142,8 @@
     "room": 1,
     "status": "Check-out",
     "room_type": "Double Superior"
-  }, {
+  },
+  {
     "id": 13,
     "first_name": "Tanny",
     "last_name": "Pancoust",
@@ -141,7 +154,8 @@
     "room": 1,
     "status": "Check-out",
     "room_type": "Suite"
-  }, {
+  },
+  {
     "id": 14,
     "first_name": "Nichole",
     "last_name": "Newlove",
@@ -152,7 +166,8 @@
     "room": 1,
     "status": "Check-in",
     "room_type": "Single Bed"
-  }, {
+  },
+  {
     "id": 15,
     "first_name": "Annice",
     "last_name": "Issit",
@@ -163,7 +178,8 @@
     "room": 1,
     "status": "Check-out",
     "room_type": "Double Bed"
-  }, {
+  },
+  {
     "id": 16,
     "first_name": "Enrique",
     "last_name": "Clemente",
@@ -174,7 +190,8 @@
     "room": 1,
     "status": "Check-in",
     "room_type": "Suite"
-  }, {
+  },
+  {
     "id": 17,
     "first_name": "Robbin",
     "last_name": "Coye",
@@ -185,7 +202,8 @@
     "room": 2,
     "status": "Check-in",
     "room_type": "Single Bed"
-  }, {
+  },
+  {
     "id": 18,
     "first_name": "Elizabeth",
     "last_name": "Tabert",
@@ -196,7 +214,8 @@
     "room": 3,
     "status": "Check-in",
     "room_type": "Double Bed"
-  }, {
+  },
+  {
     "id": 19,
     "first_name": "Ernestine",
     "last_name": "Tricker",
@@ -207,7 +226,8 @@
     "room": 4,
     "status": "Check-out",
     "room_type": "Double Superior"
-  }, {
+  },
+  {
     "id": 20,
     "first_name": "Lucian",
     "last_name": "Galton",
@@ -218,4 +238,17 @@
     "room": 5,
     "status": "Check-in",
     "room_type": "Suite"
-  }]
+  },
+  {
+    "id": 21,
+    "first_name": "jorge",
+    "last_name": "dopico",
+    "order_date": "12/4/2013",
+    "check_in": "5/19/2022",
+    "check_out": "10/3/2023",
+    "notes": "secso no gracias",
+    "room": 6,
+    "status": "Check-out",
+    "room_type": "Suite"
+  }
+]
