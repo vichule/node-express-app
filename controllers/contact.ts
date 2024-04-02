@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { addContact, deleteContact, editContact, getContact, getContacts } from '../services/contact'
+import { authToken } from '../middleware/auth'
 
 export const contactController = express.Router()
 
@@ -19,7 +20,7 @@ contactController.get('/:id', async (req: Request, res: Response, next: NextFunc
     }
 })
 
-contactController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+contactController.delete('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(deleteContact(Number(req.params.id)))
     } catch (error) {
@@ -27,7 +28,7 @@ contactController.delete('/:id', async (req: Request, res: Response, next: NextF
     }
 })
 
-contactController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+contactController.put('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(editContact(Number(req.params.id), req.body))
     } catch (error) {
@@ -35,7 +36,7 @@ contactController.put('/:id', async (req: Request, res: Response, next: NextFunc
     }
 })
 
-contactController.post('/', async (req: Request, res: Response, next: NextFunction) => {
+contactController.post('/',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(addContact(req.body))
     } catch (error) {

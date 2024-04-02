@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { addBooking, deleteBooking, editBooking, getBooking, getBookings } from '../services/booking'
+import { authToken } from '../middleware/auth'
 
 export const bookingController = express.Router()
 
@@ -19,7 +20,7 @@ bookingController.get('/:id', async (req: Request, res: Response, next: NextFunc
     }
 })
 
-bookingController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+bookingController.delete('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(deleteBooking(Number(req.params.id)))
     } catch (error) {
@@ -27,7 +28,7 @@ bookingController.delete('/:id', async (req: Request, res: Response, next: NextF
     }
 })
 
-bookingController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+bookingController.put('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(editBooking(Number(req.params.id), req.body))
     } catch (error) {
@@ -35,7 +36,7 @@ bookingController.put('/:id', async (req: Request, res: Response, next: NextFunc
     }
 })
 
-bookingController.post('/', async (req: Request, res: Response, next: NextFunction) => {
+bookingController.post('/',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(addBooking(req.body))
     } catch (error) {

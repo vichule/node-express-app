@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { addUser, deleteUser, editUser, getUser, getUsers } from '../services/user'
+import { authToken } from '../middleware/auth'
 
 export const userController = express.Router()
 
@@ -19,7 +20,7 @@ userController.get('/:id', async (req: Request, res: Response, next: NextFunctio
     }
 })
 
-userController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+userController.delete('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(deleteUser(Number(req.params.id)))
     } catch (error) {
@@ -27,7 +28,7 @@ userController.delete('/:id', async (req: Request, res: Response, next: NextFunc
     }
 })
 
-userController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+userController.put('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(editUser(Number(req.params.id), req.body))
     } catch (error) {
@@ -35,7 +36,7 @@ userController.put('/:id', async (req: Request, res: Response, next: NextFunctio
     }
 })
 
-userController.post('/', async (req: Request, res: Response, next: NextFunction) => {
+userController.post('/',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(addUser(req.body))
     } catch (error) {

@@ -12,18 +12,6 @@
     "room_type": "Suite"
   },
   {
-    "id": 2,
-    "first_name": "Nert",
-    "last_name": "Todarello",
-    "order_date": "7/24/2023",
-    "check_in": "5/5/2023",
-    "check_out": "8/28/2023",
-    "notes": "Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula.",
-    "room": 2,
-    "status": "Check-out",
-    "room_type": "Single Bed"
-  },
-  {
     "id": 3,
     "first_name": "Putnem",
     "last_name": "Crichley",
@@ -249,6 +237,18 @@
     "notes": "secso no gracias",
     "room": 6,
     "status": "Check-out",
+    "room_type": "Suite"
+  },
+  {
+    "id": 5,
+    "first_name": "stinson",
+    "last_name": "Rubertelli",
+    "order_date": "11/19/2023",
+    "check_in": "11/16/2023",
+    "check_out": "8/4/2023",
+    "notes": "Phasellus id sapien in sapien iaculis congue.",
+    "room": 5,
+    "status": "Cancelled",
     "room_type": "Suite"
   }
 ]

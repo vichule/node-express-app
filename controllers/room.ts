@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { addRoom, deleteRoom, editRoom, getRoom, getRooms } from '../services/room'
+import { authToken } from '../middleware/auth'
 
 export const roomController = express.Router()
 
@@ -19,7 +20,7 @@ roomController.get('/:id', async (req: Request, res: Response, next: NextFunctio
     }
 })
 
-roomController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+roomController.delete('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(deleteRoom(Number(req.params.id)))
     } catch (error) {
@@ -27,7 +28,7 @@ roomController.delete('/:id', async (req: Request, res: Response, next: NextFunc
     }
 })
 
-roomController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+roomController.put('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(editRoom(Number(req.params.id), req.body))
     } catch (error) {
@@ -35,7 +36,7 @@ roomController.put('/:id', async (req: Request, res: Response, next: NextFunctio
     }
 })
 
-roomController.post('/', async (req: Request, res: Response, next: NextFunction) => {
+roomController.post('/',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.json(addRoom(req.body))
     } catch (error) {
