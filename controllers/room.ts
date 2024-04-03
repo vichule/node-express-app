@@ -6,7 +6,8 @@ export const roomController = express.Router()
 
 roomController.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getRooms())
+        res.status(201)
+        res.json(getRooms(res))
     } catch (error) {
         next(error)
     }
@@ -14,7 +15,8 @@ roomController.get('/', async (_req: Request, res: Response, next: NextFunction)
 
 roomController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getRoom(Number(req.params.id)))
+        res.status(201)
+        res.json(getRoom(Number(req.params.id),res))
     } catch (error) {
         next(error)
     }
@@ -22,7 +24,8 @@ roomController.get('/:id', async (req: Request, res: Response, next: NextFunctio
 
 roomController.delete('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(deleteRoom(Number(req.params.id)))
+        res.status(201)
+        res.json(deleteRoom(Number(req.params.id),res))
     } catch (error) {
         next(error)
     }
@@ -30,7 +33,8 @@ roomController.delete('/:id',authToken, async (req: Request, res: Response, next
 
 roomController.put('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(editRoom(Number(req.params.id), req.body))
+        res.status(201)
+        res.json(editRoom(Number(req.params.id), req.body,res))
     } catch (error) {
         next(error)
     }
@@ -38,7 +42,8 @@ roomController.put('/:id',authToken, async (req: Request, res: Response, next: N
 
 roomController.post('/',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(addRoom(req.body))
+        res.status(201)
+        res.json(addRoom(req.body,res))
     } catch (error) {
         next(error)
     }

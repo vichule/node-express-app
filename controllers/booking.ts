@@ -6,7 +6,8 @@ export const bookingController = express.Router()
 
 bookingController.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getBookings())
+        res.status(201)
+        res.json(getBookings(res))
     } catch (error) {
         next(error)
     }
@@ -14,7 +15,8 @@ bookingController.get('/', async (_req: Request, res: Response, next: NextFuncti
 
 bookingController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getBooking(Number(req.params.id)))
+        res.status(201)
+        res.json(getBooking(Number(req.params.id),res))
     } catch (error) {
         next(error)
     }
@@ -22,7 +24,8 @@ bookingController.get('/:id', async (req: Request, res: Response, next: NextFunc
 
 bookingController.delete('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(deleteBooking(Number(req.params.id)))
+        res.status(201)
+        res.json(deleteBooking(Number(req.params.id),res))
     } catch (error) {
         next(error)
     }
@@ -30,7 +33,8 @@ bookingController.delete('/:id',authToken, async (req: Request, res: Response, n
 
 bookingController.put('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(editBooking(Number(req.params.id), req.body))
+        res.status(201)
+        res.json(editBooking(Number(req.params.id), req.body, res))
     } catch (error) {
         next(error)
     }
@@ -38,7 +42,8 @@ bookingController.put('/:id',authToken, async (req: Request, res: Response, next
 
 bookingController.post('/',authToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(addBooking(req.body))
+        res.status(201)
+        res.json(addBooking(req.body, res))
     } catch (error) {
         next(error)
     }
