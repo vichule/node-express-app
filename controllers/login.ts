@@ -1,9 +1,16 @@
-import express, { NextFunction, Request, Response } from 'express'
+import express, {  Request, Response } from 'express'
 import { generateAccessToken } from '../middleware/auth'
 
 export const authRouter = express.Router()
 
-authRouter.get("/", (_req: Request, res: Response) => {
-    const token = generateAccessToken('userAdmin')
-    res.json(token)
+authRouter.get("/", (req: Request, res: Response) => {
+    const { username, password } = req.body
+
+    if(username === 'admin@admin.co' && password === 'adminadmin'){
+        const token = generateAccessToken(username)
+        return res.json(token)
+    }else{
+        return res.json('Wrong credentials')
+    }
+    
 })
