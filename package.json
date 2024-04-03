@@ -6,6 +6,7 @@
     "@types/node": "^20.12.2",
     "@types/supertest": "^6.0.2",
     "nodemon": "^3.1.0",
+    "rimraf": "^5.0.5",
     "serverless": "^3.38.0",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
@@ -20,7 +21,10 @@
   },
   "scripts": {
     "start": "nodemon",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc --build",
+    "buildrim": "rimraf dist && tsc",
+    "deploy": "npm run buildrim && serverless deploy"
   },
   "jest": {
     "testEnvironment": "node",
