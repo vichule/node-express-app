@@ -8,6 +8,7 @@ package:
     - "dist/**"
     - "data/**"
     - "index.html"
+    - "specs/**"
 provider:
   name: aws
   region: eu-west-3

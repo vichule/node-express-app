@@ -5,11 +5,13 @@ import { roomController } from './controllers/room';
 import { userController } from './controllers/user';
 import { homeRouter } from './controllers/home';
 import { authRouter } from './controllers/login';
+import path from 'path';
 
 export const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('specs'))
 
 app.use("/bookings", bookingController);
 app.use("/contacts", contactController);
