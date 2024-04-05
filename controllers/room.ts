@@ -1,13 +1,12 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { addRoom, deleteRoom, editRoom, getRoom, getRooms } from '../services/room'
-import { authToken } from '../middleware/auth'
 
 export const roomController = express.Router()
 
 roomController.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(201)
-        res.json(getRooms(res))
+        res.status(200)
+        res.json(getRooms())
     } catch (error) {
         next(error)
     }
@@ -15,35 +14,35 @@ roomController.get('/', async (_req: Request, res: Response, next: NextFunction)
 
 roomController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(201)
-        res.json(getRoom(Number(req.params.id),res))
+        res.status(200)
+        res.json(getRoom(Number(req.params.id)))
     } catch (error) {
         next(error)
     }
 })
 
-roomController.delete('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
+roomController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(201)
-        res.json(deleteRoom(Number(req.params.id),res))
+        res.status(200)
+        res.json(deleteRoom(Number(req.params.id)))
     } catch (error) {
         next(error)
     }
 })
 
-roomController.put('/:id',authToken, async (req: Request, res: Response, next: NextFunction) => {
+roomController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(201)
-        res.json(editRoom(Number(req.params.id), req.body,res))
+        res.status(200)
+        res.json(editRoom(Number(req.params.id), req.body))
     } catch (error) {
         next(error)
     }
 })
 
-roomController.post('/',authToken, async (req: Request, res: Response, next: NextFunction) => {
+roomController.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.status(201)
-        res.json(addRoom(req.body,res))
+        res.json(addRoom(req.body))
     } catch (error) {
         next(error)
     }

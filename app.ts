@@ -6,19 +6,23 @@ import { userController } from './controllers/user';
 import { homeRouter } from './controllers/home';
 import { authRouter } from './controllers/login';
 import path from 'path';
+import { authTokenMiddleware } from './middleware/auth';
 
 export const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('specs'))
+app.use("/", homeRouter)
+app.use("/login", authRouter)
+
+app.use(authTokenMiddleware)
 
 app.use("/bookings", bookingController);
 app.use("/contacts", contactController);
 app.use("/rooms", roomController);
 app.use("/users", userController);
-app.use("/", homeRouter)
-app.use("/login", authRouter)
+
 
 // app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 //     console.error(err)

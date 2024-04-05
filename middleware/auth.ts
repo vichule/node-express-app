@@ -14,7 +14,7 @@ export const generateAccessToken = (username: string) => {
     return jwtoken.sign({ username }, PRIVATE_TOKEN, { expiresIn: '1800d' });
 }
 
-export const authToken = (req: AuthInterface, res: Response, next: NextFunction) => {
+export const authTokenMiddleware = (req: AuthInterface, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 

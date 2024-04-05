@@ -1,33 +1,26 @@
 import { readData, writeData } from "../util/dataExtract";
 import { RoomInterface } from "../interfaces/Room";
-import { Response } from "express";
 
-const roomsData = readData('./data/rooms.json') as RoomInterface[]
 
-export const getRooms = (res : Response): RoomInterface[] | string => {
-    if (roomsData === undefined || roomsData.length === 0) {
-        res.status(404)
-        return 'Error, there is no data'
-    } else {
+
+export const getRooms = (): RoomInterface[] => {
+    const roomsData = readData('./data/rooms.json') as RoomInterface[]
         return roomsData
-    }
-
 }
 
-export const getRoom = (id: number, res: Response): RoomInterface | string => {
-    const room = roomsData.find(element => element.id === id)
+export const getRoom = (id: number): RoomInterface | string => {
+    const room = getRooms().find(element => element.id === id)
     if (room === undefined || room === null) {
-        res.status(404)
         return 'Error, room doesnt exist'
     } else {
         return room
     }
 }
 
-export const deleteRoom = (id: number, res: Response): string => {
+export const deleteRoom = (id: number): string => {
+    const roomsData = getRooms()
     const roomID = roomsData.findIndex(element => element.id === id)
     if (roomID === -1) {
-        res.status(404)
         return 'Error, the room doesnt exist'
     } else {
         roomsData.splice(roomID, 1)
@@ -37,9 +30,9 @@ export const deleteRoom = (id: number, res: Response): string => {
 
 }
 
-export const addRoom = (room: RoomInterface, res: Response): string => {
+export const addRoom = (room: RoomInterface): string => {
+    const roomsData = getRooms()
     if (room == null || room == undefined) {
-        res.status(400)
         return 'Error trying to create new room'
     }
     roomsData.push(room)
@@ -47,10 +40,10 @@ export const addRoom = (room: RoomInterface, res: Response): string => {
     return 'room added successfully'
 }
 
-export const editRoom = (id: number, room: RoomInterface, res: Response): string => {
+export const editRoom = (id: number, room: RoomInterface): string => {
+    const roomsData = getRooms()
     const roomID = roomsData.findIndex(element => element.id === id)
     if (roomID === -1) {
-        res.status(404)
         return 'Error, the room doesnt exist'
     } else {
         roomsData.splice(roomID, 1)

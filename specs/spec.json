@@ -8,9 +8,13 @@
         "email": "javier.cabanasdiaz@gmail.com",
         "url": "https://github.com/vichule/node-express-app"
       }
-      
-    },
-    "host": "bdbppxlpje.execute-api.eu-west-3.amazonaws.com/dev/",
+    },  
+      "servers": [
+        {
+        "url": "https://bdbppxlpje.execute-api.eu-west-3.amazonaws.com/dev/",
+        "description": "Default server"
+        }
+      ],
     "basePath": "/",
     "tags": [
       {
@@ -24,7 +28,20 @@
         
       }
     ],
-    "schemes": ["https"], 
+    "securityDefinitions": {
+      "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter the token with the Bearer"
+      }
+      },
+      "security": [
+      {
+      "BearerAuth": []
+      }
+      ],
+
     "paths": {
       "/bookings": {
         "get": {
@@ -47,12 +64,7 @@
             "404": {
               "description": "Bookings data not found"
             }
-          },
-          "security": [
-            {
-              "api_key": []
-            }
-          ]
+          }
         },
         "post": {
           "tags": [
@@ -68,12 +80,7 @@
             "application/json"
           ],
           "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "required": true,
-              "type": "string"
-            },
+            
             {
               "in": "body",
               "name": "body",
@@ -103,6 +110,7 @@
             "application/json"
           ],
           "parameters": [
+            
             {
               "name": "bookingId",
               "in": "path",
@@ -126,12 +134,7 @@
             "404": {
               "description": "Booking not found"
             }
-          },
-          "security": [
-            {
-              "api_key": []
-            }
-          ]
+          }
         },
         "put": {
           "tags": [
@@ -147,12 +150,7 @@
             "application/json"
           ],
           "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "required": true,
-              "type": "string"
-            },
+            
             {
               "name": "bookingId",
               "in": "path",
@@ -196,12 +194,6 @@
           ],
           "parameters": [
             {
-              "name": "Authorization",
-              "in": "header",
-              "required": true,
-              "type": "string"
-            },
-            {
               "name": "bookingId",
               "in": "path",
               "description": "booking id to delete",
@@ -217,15 +209,7 @@
             "404": {
               "description": "Booking not found"
             }
-          },
-          "security": [
-            {
-              "petstore_auth": [
-                "write:pets",
-                "read:pets"
-              ]
-            }
-          ]
+          }
         }
       }
     },
