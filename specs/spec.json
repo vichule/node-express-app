@@ -1,312 +1,943 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "description": "Dashboard for the Miranda API using node & express.",
-      "version": "1.0.0",
-      "title": "API MIRANDA",
-      "contact": {
-        "email": "javier.cabanasdiaz@gmail.com",
-        "url": "https://github.com/vichule/node-express-app"
-      }
-    },  
-      "servers": [
-        {
-        "url": "https://bdbppxlpje.execute-api.eu-west-3.amazonaws.com/dev/",
-        "description": "Default server"
-        }
-      ],
-    "basePath": "/",
-    "tags": [
-      {
-        "name": "booking",
-        "description": "Everything about your bookings"
-        
-      },
-      {
-        "name": "user",
-        "description": "Operations about user"
-        
-      }
-    ],
-    "securityDefinitions": {
-      "BearerAuth": {
+  "swagger": "2.0",
+  "info": {
+    "description": "Dashboard for the Miranda API using node & express.",
+    "version": "1.0.0",
+    "title": "API MIRANDA",
+    "contact": {
+      "email": "javier.cabanasdiaz@gmail.com",
+      "url": "https://github.com/vichule/node-express-app"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://bdbppxlpje.execute-api.eu-west-3.amazonaws.com/dev/",
+      "description": "Default server"
+    }
+  ],
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "booking",
+      "description": "Everything about your bookings"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "securityDefinitions": {
+    "BearerAuth": {
       "type": "apiKey",
       "name": "Authorization",
       "in": "header",
       "description": "Enter the token with the Bearer"
-      }
-      },
-      "security": [
-      {
+    }
+  },
+  "security": [
+    {
       "BearerAuth": []
-      }
-      ],
-
-    "paths": {
-      "/bookings": {
-        "get": {
-          "tags": [
-            "bookings"
-          ],
-          "summary": "Get all bookings stored",
-          "description": "Returns all bookings",
-          "operationId": "getBookings",
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-                "$ref": "#/definitions/Booking"
-              }
-            },
-            "404": {
-              "description": "Bookings data not found"
+    }
+  ],
+  "paths": {
+    "/bookings": {
+      "get": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Get all bookings stored",
+        "description": "Returns all bookings",
+        "operationId": "getBookings",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Booking"
             }
-          }
-        },
-        "post": {
-          "tags": [
-            "bookings"
-          ],
-          "summary": "Add a new booking to the store",
-          "description": "",
-          "operationId": "addBooking",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            
-            {
-              "in": "body",
-              "name": "body",
-              "description": "Booking object that needs to be added to the store",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Booking"
-              }
-            }
-          ],
-          "responses": {
-            "405": {
-              "description": "Invalid input"
-            }
+          },
+          "404": {
+            "description": "Bookings data not found"
           }
         }
       },
-      "/bookings/{bookingId}": {
-        "get": {
-          "tags": [
-            "bookings"
-          ],
-          "summary": "Find booking by ID",
-          "description": "Returns a single booking",
-          "operationId": "getBookingById",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            
-            {
-              "name": "bookingId",
-              "in": "path",
-              "description": "ID of booking to return",
-              "required": true,
-              "type": "integer",
-              "format": "int64",
-              "example": 10
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-                "$ref": "#/definitions/Booking"
-              }
-            },
-            "400": {
-              "description": "Invalid ID supplied"
-            },
-            "404": {
-              "description": "Booking not found"
+      "post": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Add a new booking to the store",
+        "description": "",
+        "operationId": "addBooking",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Booking object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Booking"
             }
           }
-        },
-        "put": {
-          "tags": [
-            "bookings"
-          ],
-          "summary": "Update an existing booking",
-          "description": "",
-          "operationId": "editBooking",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            
-            {
-              "name": "bookingId",
-              "in": "path",
-              "description": "ID of booking to edit",
-              "required": true,
-              "type": "integer",
-              "format": "int64",
-              "example": 10
-            },
-            {
-              "in": "body",
-              "name": "body",
-              "description": "booking object that needs to be added to the store",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Booking"
-              }
-            }
-          ],
-          "responses": {
-            "400": {
-              "description": "Invalid ID supplied"
-            },
-            "404": {
-              "description": "Booking not found"
-            },
-            "405": {
-              "description": "Validation exception"
-            }
-          }
-        },
-        "delete": {
-          "tags": [
-            "bookings"
-          ],
-          "summary": "Deletes a booking",
-          "description": "",
-          "operationId": "deleteBooking",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "bookingId",
-              "in": "path",
-              "description": "booking id to delete",
-              "required": true,
-              "type": "integer",
-              "format": "int64"
-            }
-          ],
-          "responses": {
-            "400": {
-              "description": "Invalid ID supplied"
-            },
-            "404": {
-              "description": "Booking not found"
-            }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
           }
         }
       }
     },
-    "definitions": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "username": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "userStatus": {
-            "type": "integer",
-            "format": "int32",
-            "description": "User Status"
-          }
-        },
-        "xml": {
-          "name": "User"
-        }
-      },
-      "Booking": {
-        "type": "object",
-        "required": [
-          "id",
-          "name"
+    "/bookings/{bookingId}": {
+      "get": {
+        "tags": [
+          "bookings"
         ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "first_name": {
-            "type": "string",
-            "example": "Lucian"
-          },
-          "last_name": {
-            "type": "string",
-            "example": "Galton"
-          },
-          "order_date": {
-            "type": "string",
-            "format": "date-time",
-            "example": "8/4/2023"
-          },
-          "check_in": {
-            "type": "string",
-            "format": "date-time",
-            "example": "5/19/2023"
-          },
-          "check_out": {
-            "type": "string",
-            "format": "date-time",
-            "example": "10/3/2023"
-          },
-          "notes": {
-            "type": "string",
-            "example": "Morbi quis tortor id nulla ultrices aliquet."
-          },
-          "room": {
+        "summary": "Find booking by ID",
+        "description": "Returns a single booking",
+        "operationId": "getBookingById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "description": "ID of booking to return",
+            "required": true,
             "type": "integer",
             "format": "int64",
-            "example": 5
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Booking"
+            }
           },
-          "room_type": {
-            "type": "string",
-            "example": "Suite"
+          "400": {
+            "description": "Invalid ID supplied"
           },
-          "status": {
-            "type": "string",
-            "description": "booking status in the store",
-            "enum": [
-              "Check-in",
-              "Check-out",
-              "In progress",
-              "Cancelled"
-            ]
+          "404": {
+            "description": "Booking not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Update an existing booking",
+        "description": "",
+        "operationId": "editBooking",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "description": "ID of booking to edit",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "booking object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Booking"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Booking not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Deletes a booking",
+        "description": "",
+        "operationId": "deleteBooking",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "description": "booking id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Booking not found"
+          }
+        }
+      }
+    },
+    "/contacts": {
+      "get": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Get all message stored",
+        "description": "Returns all message",
+        "operationId": "getContacts",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "404": {
+            "description": "Contacts data not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Add a new contact to the store",
+        "description": "",
+        "operationId": "addContact",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Contact object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/contacts/{contactId}": {
+      "get": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Find message by ID",
+        "description": "Returns a single message",
+        "operationId": "getContactById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "ID of contact to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Contact not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Update an existing contact",
+        "description": "",
+        "operationId": "editContact",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "ID of contact to edit",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "contact object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Contact not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Deletes a message",
+        "description": "",
+        "operationId": "deleteContact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "contact id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Contact not found"
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Get all rooms stored",
+        "description": "Returns all rooms",
+        "operationId": "getRooms",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Room"
+            }
+          },
+          "404": {
+            "description": "Rooms data not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Add a new room to the store",
+        "description": "",
+        "operationId": "addRoom",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Room object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Room"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/rooms/{roomId}": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Find room by ID",
+        "description": "Returns a single room",
+        "operationId": "getRoomById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "description": "ID of room to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Room"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Room not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Update an existing room",
+        "description": "",
+        "operationId": "editRoom",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "description": "ID of room to edit",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "room object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Room"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Room not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Deletes a room",
+        "description": "",
+        "operationId": "deleteRoom",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "description": "room id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Room not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get all users stored",
+        "description": "Returns all users",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "Users data not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Add a new user to the store",
+        "description": "",
+        "operationId": "addUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Find user by ID",
+        "description": "Returns a single user",
+        "operationId": "getUserById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update an existing user",
+        "description": "",
+        "operationId": "editUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to edit",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Deletes a user",
+        "description": "",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }
     }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "first_name": {
+          "type": "string",
+          "example": "Cissyo"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Madrazzo"
+        },
+        "email": {
+          "type": "string",
+          "example": "cmattiazzio@si.edu"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2022-11-15"
+        },
+        "phone": {
+          "type": "string",
+          "example": "141-574-2955"
+        },
+        "description": {
+          "type": "string",
+          "example": "Morbi non quam nec dui luctus rutrum."
+        },
+        "status": {
+          "type": "string",
+          "description": "user status in the store",
+          "enum": [
+            "Active",
+            "Inactive"
+          ]
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Booking": {
+      "type": "object",
+      "required": [
+        "id",
+        "last_name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "first_name": {
+          "type": "string",
+          "example": "Lucian"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Galton"
+        },
+        "order_date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "8/4/2023"
+        },
+        "check_in": {
+          "type": "string",
+          "format": "date-time",
+          "example": "5/19/2023"
+        },
+        "check_out": {
+          "type": "string",
+          "format": "date-time",
+          "example": "10/3/2023"
+        },
+        "notes": {
+          "type": "string",
+          "example": "Morbi quis tortor id nulla ultrices aliquet."
+        },
+        "room": {
+          "type": "integer",
+          "format": "int64",
+          "example": 5
+        },
+        "room_type": {
+          "type": "string",
+          "example": "Suite"
+        },
+        "status": {
+          "type": "string",
+          "description": "booking status in the store",
+          "enum": [
+            "Check-in",
+            "Check-out",
+            "In progress",
+            "Cancelled"
+          ]
+        }
+      }
+    },
+    "Contact": {
+      "type": "object",
+      "required": [
+        "id",
+        "first_name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "first_name": {
+          "type": "string",
+          "example": "Karil"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Kopps"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "11/15/2023"
+        },
+        "email": {
+          "type": "string",
+          "example": "kkopps0@toplist.cz"
+        },
+        "phone": {
+          "type": "string",
+          "example": "418-947-7839"
+        },
+        "subject": {
+          "type": "string",
+          "example": "Morbi quis tortor id nulla ultrices aliquet."
+        },
+        "message": {
+          "type": "string",
+          "example": "Ut at dolor quis odio consequat varius. Integer ac leo."
+        },
+        "photo": {
+          "type": "string",
+          "example": "http://dummyimage.com/177x100.png/dddddd/000000"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "contact status in the store",
+          "enum": [
+            true,
+            false
+          ]
+        }
+      }
+    },
+    "Room": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "room_type": {
+          "type": "string",
+          "example": "Suite"
+        },
+        "room_number": {
+          "type": "integer",
+          "format": "int64",
+          "example": 601
+        },
+        "description": {
+          "type": "string",
+          "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64",
+          "example": 450
+        },
+        "offer": {
+          "type": "boolean",
+          "example": true
+        },
+        "discount": {
+          "type": "integer",
+          "format": "int64",
+          "example": 10
+        },
+        "cancellation": {
+          "type": "string",
+          "example": "Lorem ipsum dolor sit amet."
+        },
+        "photos": {
+          "type": "string",
+          "example": "https://plus.unsplash.com/premium_photo-1661875135365-16aab794632f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aG90ZWwlMjByb29tJTIwc3VpdGV8ZW58MHx8MHx8fDA%3D"
+        },
+        "amenities": {
+          "type": "string",
+          "description": "room amenities",
+          "enum": [
+            "Air conditioner",
+            "Breakfast",
+            "Cleaning",
+            "Grocery",
+            "Shop near",
+            "24/7 Online Support",
+            "Smart Security",
+            "High-speed WiFi",
+            "Kitchen",
+            "Shower",
+            "Towels",
+            "Strong Locker",
+            "Expert Team"
+          ]
+        },
+        "status":{
+          "type": "string",
+          "description": "room status ocupancy",
+          "enum":[
+            "available",
+            "booked"
+          ]
+        }
+      }
+    }
   }
+}
