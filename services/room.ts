@@ -1,55 +1,50 @@
 import { readData, writeData } from "../util/dataExtract";
 import { RoomInterface } from "../interfaces/Room";
 import { ErrorApp } from "../classes/ErrorApp";
+import mongoose from "mongoose";
+import { roomModel } from "../schemas/RoomSchema";
 
 
 
-export const getRooms = (): RoomInterface[] => {
-    const roomsData = readData('./data/rooms.json') as RoomInterface[]
-        return roomsData
+
+export const getRooms = async (): Promise<RoomInterface[]> => {
+    const roomsData = await roomModel.find({})
+    return roomsData
 }
 
-export const getRoom = (id: number): RoomInterface | string => {
-    const room = getRooms().find(element => element.id === id)
+export const getRoom = async (id: number): Promise<string | RoomInterface> => {
+    const room = await roomModel.findById(id)
     if (room === undefined || room === null) {
-        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
+        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return room
     }
 }
 
-export const deleteRoom = (id: number): string => {
-    const roomsData = getRooms()
-    const roomID = roomsData.findIndex(element => element.id === id)
-    if (roomID === -1) {
-        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
+export const deleteRoom = async (id: number): Promise<string> => {
+    const roomID = await roomModel.findByIdAndDelete(id)
+    if (!roomID) {
+        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
-        roomsData.splice(roomID, 1)
-        writeData('./data/rooms.json', JSON.stringify(roomsData))
+
         return `room with id: ${id} has been deleted`
     }
 
 }
 
-export const addRoom = (room: RoomInterface): string => {
-    const roomsData = getRooms()
+export const addRoom = async (room: RoomInterface): Promise<RoomInterface> => {
     if (room == null || room == undefined) {
-        throw new ErrorApp({status: 400, message: 'Error trying to create new room'})
+        throw new ErrorApp({ status: 400, message: 'Error trying to create new room' })
     }
-    roomsData.push(room)
-    writeData('./data/rooms.json', JSON.stringify(roomsData))
-    return 'room added successfully'
+    const roomID = await roomModel.create(room)
+    return roomID
 }
 
-export const editRoom = (id: number, room: RoomInterface): string => {
-    const roomsData = getRooms()
-    const roomID = roomsData.findIndex(element => element.id === id)
-    if (roomID === -1) {
-        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
+export const editRoom = async (id: number, room: RoomInterface): Promise<RoomInterface> => {
+    const roomID = await roomModel.findByIdAndUpdate(id, room, {new:true})
+    if (!roomID) {
+        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
-        roomsData.splice(roomID, 1)
-        roomsData.push(room)
-        writeData('./data/rooms.json', JSON.stringify(roomsData))
-        return 'room edited successfully'
+        return roomID
     }
 }

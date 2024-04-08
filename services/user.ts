@@ -1,55 +1,49 @@
 import { readData, writeData } from "../util/dataExtract";
 import { UserInterface } from "../interfaces/User";
 import { ErrorApp } from "../classes/ErrorApp";
+import mongoose from "mongoose";
+import { userModel } from "../schemas/UserSchema";
 
 
 
-export const getUsers = (): UserInterface[] => {
-    const usersData = readData('./data/users.json') as UserInterface[]
-        return usersData
+export const getUsers = async (): Promise<UserInterface[]> => {
+    const usersData = await userModel.find({})
+    return usersData
 }
 
-export const getUser = (id: number): UserInterface | string => {
-    const user = getUsers().find(element => element.id === id)
+export const getUser = async (id: any): Promise<UserInterface> => {
+    const user = await userModel.findById(id)
     if (user === undefined || user === null) {
-        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
+        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return user
     }
 }
 
-export const deleteUser = (id: number): string => {
-    const usersData = getUsers()
-    const userID = usersData.findIndex(element => element.id === id)
-    if (userID === -1) {
-        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
+export const deleteUser = async (id: any): Promise<string> => {
+    const userID = await userModel.findByIdAndDelete(id)
+    if (!userID) {
+        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
-        usersData.splice(userID, 1)
-        writeData('./data/users.json', JSON.stringify(usersData))
         return `user with id: ${id} has been deleted`
     }
 
 }
 
-export const addUser = (user: UserInterface): string => {
-    const usersData = getUsers()
+export const addUser = async (user: UserInterface): Promise<UserInterface> => {
     if (user === null || user === undefined) {
         throw new ErrorApp({ status: 400, message: 'Error trying to create new user' })
     }
-    usersData.push(user)
-    writeData('./data/user.json', JSON.stringify(usersData))
-    return 'user added successfully'
+    const dataUser = await userModel.create(user)
+    return dataUser
 }
 
-export const editUser = (id: number, user: UserInterface): string => {
-    const usersData = getUsers()
-    const userID = usersData.findIndex(element => element.id === id)
-    if (userID === -1) {
-        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
+export const editUser = async (id: any, user: UserInterface): Promise<UserInterface> => {
+    const dataUser = await userModel.findByIdAndUpdate(id, user, {new:true})
+    if (!dataUser) {
+        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
-        usersData.splice(userID, 1)
-        usersData.push(user)
-        writeData('./data/users.json', JSON.stringify(usersData))
-        return 'user edited successfully'
+        
+        return dataUser
     }
 }

@@ -5,7 +5,8 @@ export const userController = express.Router()
 
 userController.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getUsers())
+        const dataUsers = await getUsers()
+        res.json(dataUsers)
     } catch (error) {
         next(error)
     }
@@ -13,7 +14,8 @@ userController.get('/', async (_req: Request, res: Response, next: NextFunction)
 
 userController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getUser(Number(req.params.id)))
+        const dataUser = await getUser(req.params.id)
+        res.json(dataUser)
     } catch (error) {
         next(error)
     }
@@ -22,7 +24,7 @@ userController.get('/:id', async (req: Request, res: Response, next: NextFunctio
 userController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-        res.json(deleteUser(Number(req.params.id)))
+        res.json(deleteUser((req.params.id)))
     } catch (error: any) {
         next(error)
     }
@@ -31,7 +33,7 @@ userController.delete('/:id', async (req: Request, res: Response, next: NextFunc
 userController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-        res.json(editUser(Number(req.params.id), req.body))
+        res.json(editUser((req.params.id), req.body))
     } catch (error: any) {
         next(error)
     }

@@ -19,15 +19,15 @@ export const authTokenMiddleware = (req: AuthInterface, res: Response, next: Nex
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
-    if (token == null) 
-    
-        throw new ErrorApp({ status: 401, message: 'Error, no authorized' })
+    if (token == null) return res.status(401)
+        .json('Error, no authorized')
+
 
 
 
 
     jwtoken.verify(token, PRIVATE_TOKEN as string, (err: any, user: any) => {
-        console.log(err)
+        //console.log(err, 'error token', token)
 
         if (err) return res.sendStatus(403)
 

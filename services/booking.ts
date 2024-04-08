@@ -1,55 +1,54 @@
 import { readData, writeData } from "../util/dataExtract";
 import { BookingInterface } from "../interfaces/Booking";
 import { ErrorApp } from "../classes/ErrorApp";
+import { bookingModel } from "../schemas/BookingSchema";
+import mongoose from "mongoose";
 
 
 
-export const getBookings = (): BookingInterface[] => {
-    const bookingsData = readData('./data/bookings.json') as BookingInterface[]
+
+
+
+export const getBookings = async (): Promise<BookingInterface[]> => {
+    const bookingsData = await bookingModel.find({})
     return bookingsData
 }
 
-export const getBooking = (id: number): BookingInterface | string => {
-    const booking = getBookings().find(element => element.id === id)
+export const getBooking = async (id: any): Promise<BookingInterface | null> => {
+    const booking = await bookingModel.findById(id)
+
     if (booking === undefined || booking === null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return booking
     }
+
 }
 
-export const deleteBooking = (id: number): string => {
-    const bookingsData = getBookings()
-    const bookingID = bookingsData.findIndex(element => element.id === id)
-    if (bookingID === -1) {
+export const deleteBooking = async (id: any): Promise<string> => {
+    const bookingID = await bookingModel.findByIdAndDelete(id)
+    if (!bookingID) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
-        bookingsData.splice(bookingID, 1)
-        writeData('./data/bookings.json', JSON.stringify(bookingsData))
         return `Booking with id: ${id} has been deleted`
     }
 
 }
 
-export const addBooking = (booking: BookingInterface): string => {
-    const bookingsData = getBookings()
+export const addBooking = async (booking: BookingInterface): Promise<BookingInterface> => {
+
     if (booking === null || booking === undefined) {
         throw new ErrorApp({ status: 400, message: 'Error trying to create new booking' })
     }
-    bookingsData.push(booking)
-    writeData('./data/bookings.json', JSON.stringify(bookingsData))
-    return 'Booking added successfully'
+    const bookingID = await bookingModel.create(booking)
+    return bookingID
 }
 
-export const editBooking = (id: number, booking: BookingInterface): string => {
-    const bookingsData = getBookings()
-    const bookingID = bookingsData.findIndex(element => element.id === id)
-    if (bookingID === -1) {
+export const editBooking = async (id: any, booking: BookingInterface): Promise<BookingInterface> => {
+    const bookingID = await bookingModel.findByIdAndUpdate(id, booking, {new: true})
+    if (!bookingID) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
-        bookingsData.splice(bookingID, 1)
-        bookingsData.push(booking)
-        writeData('./data/bookings.json', JSON.stringify(bookingsData))
-        return 'Booking edited successfully'
+        return bookingID
     }
 }

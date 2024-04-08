@@ -111,9 +111,8 @@
             "in": "path",
             "description": "ID of booking to return",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": 10
+            "type": "string",
+            "example": "66139d38a096d16fdf018507"
           }
         ],
         "responses": {
@@ -150,9 +149,8 @@
             "in": "path",
             "description": "ID of booking to edit",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": 10
+            "type": "string",
+            "example": "66139d38a096d16fdf018507"
           },
           {
             "in": "body",
@@ -192,8 +190,8 @@
             "in": "path",
             "description": "booking id to delete",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "example": "66139d38a096d16fdf018507"
           }
         ],
         "responses": {
@@ -277,9 +275,8 @@
             "in": "path",
             "description": "ID of contact to return",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": 10
+            "type": "string",
+            "example": "66139d3fa096d16fdf01852d"
           }
         ],
         "responses": {
@@ -316,9 +313,8 @@
             "in": "path",
             "description": "ID of contact to edit",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": 10
+            "type": "string",
+            "example": "66139d3fa096d16fdf01852d"
           },
           {
             "in": "body",
@@ -358,8 +354,8 @@
             "in": "path",
             "description": "contact id to delete",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "example": "66139d3fa096d16fdf01852d"
           }
         ],
         "responses": {
@@ -445,7 +441,7 @@
             "required": true,
             "type": "integer",
             "format": "int64",
-            "example": 10
+            "example": "5"
           }
         ],
         "responses": {
@@ -484,7 +480,7 @@
             "required": true,
             "type": "integer",
             "format": "int64",
-            "example": 10
+            "example": "5"
           },
           {
             "in": "body",
@@ -525,7 +521,8 @@
             "description": "room id to delete",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "example": "5"
           }
         ],
         "responses": {
@@ -609,9 +606,8 @@
             "in": "path",
             "description": "ID of user to return",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": 10
+            "type": "string",
+            "example": "66139d4da096d16fdf018552"
           }
         ],
         "responses": {
@@ -648,9 +644,8 @@
             "in": "path",
             "description": "ID of user to edit",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": 10
+            "type": "string",
+            "example": "66139d4da096d16fdf018552"
           },
           {
             "in": "body",
@@ -690,8 +685,8 @@
             "in": "path",
             "description": "user id to delete",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "example": "66139d4da096d16fdf018552"
           }
         ],
         "responses": {
@@ -709,10 +704,6 @@
     "User": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
         "first_name": {
           "type": "string",
           "example": "Cissyo"
@@ -754,14 +745,9 @@
     "Booking": {
       "type": "object",
       "required": [
-        "id",
         "last_name"
       ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
         "first_name": {
           "type": "string",
           "example": "Lucian"
@@ -812,15 +798,7 @@
     },
     "Contact": {
       "type": "object",
-      "required": [
-        "id",
-        "first_name"
-      ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
         "first_name": {
           "type": "string",
           "example": "Karil"
@@ -866,15 +844,7 @@
     },
     "Room": {
       "type": "object",
-      "required": [
-        "id",
-        "name"
-      ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
         "room_type": {
           "type": "string",
           "example": "Suite"

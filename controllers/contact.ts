@@ -5,7 +5,8 @@ export const contactController = express.Router()
 
 contactController.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getContacts())
+        const dataContacts = await getContacts()
+        res.json(dataContacts)
     } catch (error: any) {
         next(error)
     }
@@ -13,7 +14,8 @@ contactController.get('/', async (_req: Request, res: Response, next: NextFuncti
 
 contactController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(getContact(Number(req.params.id)))
+        const dataContacts = await getContact(req.params.id)
+        res.json(dataContacts)
     } catch (error: any) {
         next(error)
     }
@@ -21,7 +23,7 @@ contactController.get('/:id', async (req: Request, res: Response, next: NextFunc
 
 contactController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(deleteContact(Number(req.params.id)))
+        res.json(deleteContact((req.params.id)))
     } catch (error: any) {
         next(error)
     }
@@ -29,7 +31,7 @@ contactController.delete('/:id', async (req: Request, res: Response, next: NextF
 
 contactController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(editContact(Number(req.params.id), req.body))
+        res.json(editContact((req.params.id), req.body))
     } catch (error: any) {
         next(error)
     }
