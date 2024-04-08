@@ -1,5 +1,6 @@
 import { readData, writeData } from "../util/dataExtract";
 import { UserInterface } from "../interfaces/User";
+import { ErrorApp } from "../classes/ErrorApp";
 
 
 
@@ -11,7 +12,7 @@ export const getUsers = (): UserInterface[] => {
 export const getUser = (id: number): UserInterface | string => {
     const user = getUsers().find(element => element.id === id)
     if (user === undefined || user === null) {
-        return 'Error, user doesnt exist'
+        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         return user
     }
@@ -21,7 +22,7 @@ export const deleteUser = (id: number): string => {
     const usersData = getUsers()
     const userID = usersData.findIndex(element => element.id === id)
     if (userID === -1) {
-        return 'Error, the user doesnt exist'
+        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         usersData.splice(userID, 1)
         writeData('./data/users.json', JSON.stringify(usersData))
@@ -33,7 +34,7 @@ export const deleteUser = (id: number): string => {
 export const addUser = (user: UserInterface): string => {
     const usersData = getUsers()
     if (user === null || user === undefined) {
-        return 'Error trying to create new user'
+        throw new ErrorApp({ status: 400, message: 'Error trying to create new user' })
     }
     usersData.push(user)
     writeData('./data/user.json', JSON.stringify(usersData))
@@ -44,7 +45,7 @@ export const editUser = (id: number, user: UserInterface): string => {
     const usersData = getUsers()
     const userID = usersData.findIndex(element => element.id === id)
     if (userID === -1) {
-        return 'Error, the user doesnt exist'
+        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         usersData.splice(userID, 1)
         usersData.push(user)

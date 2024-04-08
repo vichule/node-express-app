@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import jwtoken, { Secret } from 'jsonwebtoken'
 
 import dotenv from 'dotenv'
+import { ErrorApp } from '../classes/ErrorApp'
 
 interface AuthInterface extends Request {
     user?: any
@@ -18,8 +19,10 @@ export const authTokenMiddleware = (req: AuthInterface, res: Response, next: Nex
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
-    if (token == null) return res.status(401)
-        .json('Error, no authorized')
+    if (token == null) 
+    
+        throw new ErrorApp({ status: 401, message: 'Error, no authorized' })
+
 
 
 

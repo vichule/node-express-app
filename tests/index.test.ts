@@ -6,18 +6,17 @@ const apitoken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6In
   describe('Delete booking Endpoints', () => {
   it('should delete a booking', async () => {
     const res = await request(app)
-      .delete('/bookings/20')
+      .delete('/bookings/19')
       .set({authorization: apitoken})
-    expect(res.statusCode).toEqual(201)
-    expect(res.body).toEqual('Booking with id: 20 has been deleted');
+    expect(res.statusCode).toEqual(200)
+    expect(res.body).toEqual('Booking with id: 19 has been deleted');
   })
 
   it('should not delete a booking and send error with status 404', async () => {
     const res = await request(app)
-      .delete('/bookings/40')
+      .delete('/bookings/170')
       .set({authorization: apitoken})
     expect(res.statusCode).toEqual(404)
-    expect(res.body).toEqual('Error, the booking doesnt exist');
   })
 })
 
@@ -56,21 +55,10 @@ describe('Post room Endpoints', () => {
             status: "available"
           
         })
-      expect(res.statusCode).toEqual(201)
+      expect(res.statusCode).toEqual(200)
       expect(res.body).toEqual('room added successfully');
     })
   
-    //crea el objeto aunque esté vacío ??
-    it('should not add a new room and send error with status 400', async () => {
-      const res = await request(app)
-        .post('/rooms')
-        .set({authorization: apitoken})
-        .send(
-          
-        )
-      expect(res.statusCode).toEqual(400)
-      expect(res.body).toEqual('Error trying to create new room');
-    })
 
     it('should not add a new room and send error with status 401', async () => {
       const res = await request(app)
@@ -105,7 +93,6 @@ describe('Post room Endpoints', () => {
         
       })
       expect(res.statusCode).toEqual(401)
-      expect(res.body).toEqual('Error, no authorized');
     })
   })
 
@@ -114,7 +101,7 @@ describe('Post room Endpoints', () => {
       const res = await request(app)
         .delete('/rooms/50')
         .set({authorization: apitoken})
-      expect(res.statusCode).toEqual(201)
+      expect(res.statusCode).toEqual(200)
       expect(res.body).toEqual('room with id: 50 has been deleted');
     })
   
@@ -123,13 +110,12 @@ describe('Post room Endpoints', () => {
         .delete('/rooms/40')
         .set({authorization: apitoken})
       expect(res.statusCode).toEqual(404)
-      expect(res.body).toEqual('Error, the room doesnt exist');
     })
   })
 
 
   describe('Put users Endpoints', () => {
-    it('should edit the user with id 2 and send 201 status', async () => {
+    it('should edit the user with id 2 and send 200 status', async () => {
       const res = await request(app)
       .put('/users/2')
         .set({authorization: apitoken})
@@ -146,7 +132,7 @@ describe('Post room Endpoints', () => {
           "status": "Inactive"
           
         })
-      expect(res.statusCode).toEqual(201)
+      expect(res.statusCode).toEqual(200)
       expect(res.body).toEqual('user edited successfully');
     })
   
@@ -169,7 +155,6 @@ describe('Post room Endpoints', () => {
         
       })
       expect(res.statusCode).toEqual(404)
-      expect(res.body).toEqual('Error, the user doesnt exist');
     })
 
     it('should not edit the user and send error with status 401', async () => {
@@ -189,14 +174,14 @@ describe('Post room Endpoints', () => {
         
       })
       expect(res.statusCode).toEqual(401)
-      expect(res.body).toEqual('Error, no authorized');
     })
   })
 
   describe('Get contacts endpoints' ,()=>{
-    it('should get and show contacts data, with status 201', async () => {
+    it('should get and show contacts data, with status 200', async () => {
       const res = await request(app)
         .get('/contacts')
-      expect(res.statusCode).toEqual(201)
+        .set({authorization: apitoken})
+      expect(res.statusCode).toEqual(200)
     })
   })

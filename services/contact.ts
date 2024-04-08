@@ -1,5 +1,6 @@
 import { readData, writeData } from "../util/dataExtract";
 import { ContactInterface } from "../interfaces/Contact";
+import { ErrorApp } from "../classes/ErrorApp";
 
 
 
@@ -11,7 +12,7 @@ export const getContacts = (): ContactInterface[] => {
 export const getContact = (id: number): ContactInterface | string => {
     const contact = getContacts().find(element => element.id === id)
     if (contact === undefined || contact === null) {
-        return 'Error, contact doesnt exist'
+        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         return contact
     }
@@ -21,7 +22,7 @@ export const deleteContact = (id: number): string => {
     const contactsData = getContacts()
     const contactID = contactsData.findIndex(element => element.id === id)
     if (contactID === -1) {
-        return 'Error, the contact doesnt exist'
+        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         contactsData.splice(contactID, 1)
         writeData('./data/contact.json', JSON.stringify(contactsData))
@@ -33,7 +34,7 @@ export const deleteContact = (id: number): string => {
 export const addContact = (contact: ContactInterface): string => {
     const contactsData = getContacts()
     if (contact === null || contact === undefined) {
-        return 'Error trying to create new contact'
+        throw new ErrorApp({ status: 400, message: 'Error trying to create new message' })
     }
     contactsData.push(contact)
     writeData('./data/contact.json', JSON.stringify(contactsData))
@@ -44,7 +45,7 @@ export const editContact = (id: number, contact: ContactInterface): string => {
     const contactsData = getContacts()
     const contactID = contactsData.findIndex(element => element.id === id)
     if (contactID === -1) {
-        return 'Error, the contact doesnt exist'
+        throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         contactsData.splice(contactID, 1)
         contactsData.push(contact)
