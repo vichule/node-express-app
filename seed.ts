@@ -10,8 +10,11 @@ import { ContactInterface } from './interfaces/Contact';
 import { UserInterface } from './interfaces/User';
 import { BookingInterface } from './interfaces/Booking';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 
-const uri = "mongodb://127.0.0.1:27017"
+dotenv.config();
+
+const uri = process.env.MONGODB_URI!
 const client = new MongoClient(uri);
 
 
@@ -30,7 +33,7 @@ const createRoom = (): RoomInterface => {
             "https://plus.unsplash.com/premium_photo-1661964402307-02267d1423f5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGhvdGVsJTIwcm9vbSUyMHN1aXRlfGVufDB8fDB8fHww",
             "https://plus.unsplash.com/premium_photo-1661963630748-3de7ab820570?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c3VpdGV8ZW58MHx8MHx8fDA%3D"
         ],
-        amenities: [
+        amenities: faker.helpers.arrayElements([
             "Air conditioner",
             "Breakfast",
             "Cleaning",
@@ -44,7 +47,7 @@ const createRoom = (): RoomInterface => {
             "Towels",
             "Strong Locker",
             "Expert Team"
-        ],
+        ], { min: 5, max: 13 }),
         status: faker.helpers.arrayElement(['Available', 'Booked'])
     })
 }

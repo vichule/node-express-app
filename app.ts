@@ -8,8 +8,12 @@ import { authRouter } from './controllers/login';
 import path from 'path';
 import { authTokenMiddleware } from './middleware/auth';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-mongoose.connect('mongodb://127.0.0.1:27017/Miranda-DB').then((x) => {
+dotenv.config();
+const uri = process.env.MONGODB_URI!
+
+mongoose.connect(uri).then((x) => {
     console.log(
         `Connected to Mongo! Database name: "${x.connections[0].name}"`
     );

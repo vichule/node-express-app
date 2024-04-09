@@ -9,12 +9,12 @@ import { bookingModel } from "../schemas/BookingSchema";
 
 
 export const getBookings = async (): Promise<BookingInterface[]> => {
-    const bookingsData = await bookingModel.find({})
+    const bookingsData = await bookingModel.find({}).populate('room')
     return bookingsData
 }
 
 export const getBooking = async (id: any): Promise<BookingInterface | null> => {
-    const booking = await bookingModel.findById(id)
+    const booking = await bookingModel.findById(id).populate('room')
 
     if (booking === undefined || booking === null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
@@ -39,12 +39,12 @@ export const addBooking = async (booking: BookingInterface): Promise<BookingInte
     if (booking === null || booking === undefined) {
         throw new ErrorApp({ status: 400, message: 'Error trying to create new booking' })
     }
-    const bookingID = await bookingModel.create(booking)
+    const bookingID = (await bookingModel.create(booking)).populate('room')
     return bookingID
 }
 
 export const editBooking = async (id: any, booking: BookingInterface): Promise<BookingInterface> => {
-    const bookingID = await bookingModel.findByIdAndUpdate(id, booking, {new: true})
+    const bookingID = await bookingModel.findByIdAndUpdate(id, booking, {new: true}).populate('room')
     if (bookingID == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
