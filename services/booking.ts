@@ -2,7 +2,6 @@ import { readData, writeData } from "../util/dataExtract";
 import { BookingInterface } from "../interfaces/Booking";
 import { ErrorApp } from "../classes/ErrorApp";
 import { bookingModel } from "../schemas/BookingSchema";
-import mongoose from "mongoose";
 
 
 
@@ -27,7 +26,7 @@ export const getBooking = async (id: any): Promise<BookingInterface | null> => {
 
 export const deleteBooking = async (id: any): Promise<string> => {
     const bookingID = await bookingModel.findByIdAndDelete(id)
-    if (!bookingID) {
+    if (bookingID == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return `Booking with id: ${id} has been deleted`
@@ -46,7 +45,7 @@ export const addBooking = async (booking: BookingInterface): Promise<BookingInte
 
 export const editBooking = async (id: any, booking: BookingInterface): Promise<BookingInterface> => {
     const bookingID = await bookingModel.findByIdAndUpdate(id, booking, {new: true})
-    if (!bookingID) {
+    if (bookingID == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return bookingID

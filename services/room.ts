@@ -1,7 +1,6 @@
 import { readData, writeData } from "../util/dataExtract";
 import { RoomInterface } from "../interfaces/Room";
 import { ErrorApp } from "../classes/ErrorApp";
-import mongoose from "mongoose";
 import { roomModel } from "../schemas/RoomSchema";
 
 
@@ -23,7 +22,7 @@ export const getRoom = async (id: number): Promise<string | RoomInterface> => {
 
 export const deleteRoom = async (id: number): Promise<string> => {
     const roomID = await roomModel.findByIdAndDelete(id)
-    if (!roomID) {
+    if (roomID == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
 
@@ -42,7 +41,7 @@ export const addRoom = async (room: RoomInterface): Promise<RoomInterface> => {
 
 export const editRoom = async (id: number, room: RoomInterface): Promise<RoomInterface> => {
     const roomID = await roomModel.findByIdAndUpdate(id, room, {new:true})
-    if (!roomID) {
+    if (roomID == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return roomID

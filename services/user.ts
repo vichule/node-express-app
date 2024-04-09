@@ -22,7 +22,7 @@ export const getUser = async (id: any): Promise<UserInterface> => {
 
 export const deleteUser = async (id: any): Promise<string> => {
     const userID = await userModel.findByIdAndDelete(id)
-    if (!userID) {
+    if (userID == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return `user with id: ${id} has been deleted`
@@ -40,7 +40,7 @@ export const addUser = async (user: UserInterface): Promise<UserInterface> => {
 
 export const editUser = async (id: any, user: UserInterface): Promise<UserInterface> => {
     const dataUser = await userModel.findByIdAndUpdate(id, user, {new:true})
-    if (!dataUser) {
+    if (dataUser == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         

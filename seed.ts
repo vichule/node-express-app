@@ -1,0 +1,145 @@
+
+import { faker } from '@faker-js/faker';
+import { userModel } from './schemas/UserSchema';
+import { bookingModel } from './schemas/BookingSchema';
+import { roomModel } from './schemas/RoomSchema';
+import { contactModel } from './schemas/ContactSchema';
+import { MongoClient } from "mongodb";
+import { RoomInterface } from './interfaces/Room';
+import { ContactInterface } from './interfaces/Contact';
+import { UserInterface } from './interfaces/User';
+import { BookingInterface } from './interfaces/Booking';
+
+const uri = "mongodb://127.0.0.1:27017"
+const client = new MongoClient(uri);
+
+
+const createRoom = (): RoomInterface => {
+    return new roomModel({
+        _id: faker.string.uuid(),
+        room_type: faker.helpers.arrayElement(['Suite', 'Single Bed', 'Double Bed', 'Double Superior']),
+        room_number: faker.number.int({ min: 10, max: 500 }),
+        description: faker.lorem.sentence({ min: 3, max: 10 }),
+        price: faker.number.int({ min: 150, max: 500 }),
+        offer: faker.datatype.boolean(0.5),
+        discount: faker.number.int({ min: 0, max: 99 }),
+        cancellation: faker.lorem.text(),
+        photos: [
+            "https://plus.unsplash.com/premium_photo-1661875135365-16aab794632f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aG90ZWwlMjByb29tJTIwc3VpdGV8ZW58MHx8MHx8fDA%3D",
+            "https://plus.unsplash.com/premium_photo-1661964402307-02267d1423f5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGhvdGVsJTIwcm9vbSUyMHN1aXRlfGVufDB8fDB8fHww",
+            "https://plus.unsplash.com/premium_photo-1661963630748-3de7ab820570?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c3VpdGV8ZW58MHx8MHx8fDA%3D"
+        ],
+        amenities: [
+            "Air conditioner",
+            "Breakfast",
+            "Cleaning",
+            "Grocery",
+            "Shop near",
+            "24/7 Online Support",
+            "Smart Security",
+            "High-speed WiFi",
+            "Kitchen",
+            "Shower",
+            "Towels",
+            "Strong Locker",
+            "Expert Team"
+        ],
+        status: faker.helpers.arrayElement(['Available', 'Booked'])
+    })
+}
+
+export const ROOMS: RoomInterface[] = faker.helpers.multiple(createRoom, {
+    count: 15,
+});
+
+const createContact = (): ContactInterface => {
+
+    return new contactModel({
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        email: faker.internet.email(),
+        phone: faker.phone.number(),
+        subject: faker.lorem.sentence({ min: 1, max: 5 }),
+        message: faker.lorem.text(),
+        date: faker.date.recent(),
+        photo: "http://dummyimage.com/240x100.png/cc0000/ffffff",
+        status: faker.datatype.boolean(0.5)
+    })
+}
+
+export const CONTACTS: ContactInterface[] = faker.helpers.multiple(createContact, {
+    count: 15,
+});
+
+const createUser = () => {
+
+    return new userModel({
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        email: faker.internet.email(),
+        start_date: faker.date.past(),
+        description: faker.lorem.sentence({ min: 1, max: 5 }),
+        photo: "http://dummyimage.com/137x100.png/5fa2dd/ffffff",
+        phone: faker.phone.number(),
+        status: faker.helpers.arrayElement(['Active', 'Inactive'])
+    })
+}
+
+export const USERS: UserInterface[] = faker.helpers.multiple(createUser, {
+    count: 15,
+});
+
+const createBooking = (ROOMS: RoomInterface[]) => {
+
+    const randomId = (rooms: RoomInterface[]) => {
+        const randNum = Math.floor(Math.random() * rooms.length)
+        return rooms[randNum]._id
+    }
+
+    return new bookingModel({
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        order_date: faker.date.recent(),
+        check_in: faker.date.recent(),
+        check_out: faker.date.soon(),
+        notes: faker.lorem.sentence({ min: 1, max: 5 }),
+        room: randomId(ROOMS),
+        status: faker.helpers.arrayElement(['Check-in', 'Check-out', 'In progress', 'Cancelled'])
+    })
+}
+
+export const BOOKINGS: BookingInterface[] = faker.helpers.multiple(()=>createBooking(ROOMS), {
+    count: 15,
+});
+
+async function connection() {
+
+    try {
+        await client.connect();
+        console.log("Connected correctly to server");
+
+        const roomCollection = client.db("Miranda-DB").collection("rooms");
+        const contactCollection = client.db("Miranda-DB").collection("contacts");
+        const userCollection = client.db("Miranda-DB").collection("users");
+        const bookingCollection = client.db("Miranda-DB").collection("bookings");
+
+        await roomCollection.drop()
+        await contactCollection.drop()
+        await userCollection.drop()
+        await bookingCollection.drop()
+
+        await roomCollection.insertMany(ROOMS)
+        await contactCollection.insertMany(CONTACTS)
+        await userCollection.insertMany(USERS)
+        await bookingCollection.insertMany(BOOKINGS)
+
+
+        client.close()
+
+    } catch (err: any) {
+        console.log(err.stack);
+    }
+}
+
+
+connection()

@@ -5,7 +5,6 @@ import { RoomInterface } from "../interfaces/Room";
 const { Schema } = mongoose
 
 const roomSchema = new Schema<RoomInterface>({
-    id: { type: Number, required: true},
     room_type: { type: String, required: true},
     room_number: { type: Number, required: true},
     description: { type: String, required: true},

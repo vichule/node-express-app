@@ -12,7 +12,7 @@ const userSchema = new Schema<UserInterface>({
     description: { type: String, required: true},
     photo: { type: String, required: true},
     phone: { type: String, required: true},
-    status: {type: [String],enum: ["Active", "Inactive"], required: true}
+    status: {type: String,enum: ["Active", "Inactive"], required: true}
 })
 
 export const userModel = model<UserInterface>('users', userSchema)

@@ -6,5 +6,5 @@ export interface UserInterface {
     description: string,
     photo: string,
     phone: string,
-    status: string[]
+    status: string
 }

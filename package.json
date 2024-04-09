@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
@@ -25,7 +26,8 @@
     "test": "jest",
     "build": "tsc --build",
     "buildrim": "rimraf dist && tsc",
-    "deploy": "npm run buildrim && serverless deploy"
+    "deploy": "npm run buildrim && serverless deploy",
+    "cid": "ts-node seed.ts"
   },
   "jest": {
     "testEnvironment": "node",
