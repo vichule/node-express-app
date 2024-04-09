@@ -9,6 +9,7 @@ import { RoomInterface } from './interfaces/Room';
 import { ContactInterface } from './interfaces/Contact';
 import { UserInterface } from './interfaces/User';
 import { BookingInterface } from './interfaces/Booking';
+import bcrypt from 'bcryptjs';
 
 const uri = "mongodb://127.0.0.1:27017"
 const client = new MongoClient(uri);
@@ -72,16 +73,22 @@ export const CONTACTS: ContactInterface[] = faker.helpers.multiple(createContact
 });
 
 const createUser = () => {
+    const rawPassword = faker.string.alphanumeric(10)
+    const userEmail = faker.internet.email()
+    console.log(`user: ${userEmail} with password: ${rawPassword}`)
+    const hashPassword = bcrypt.hashSync(rawPassword, 5)
 
     return new userModel({
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
-        email: faker.internet.email(),
+        email: userEmail,
         start_date: faker.date.past(),
+        job: faker.helpers.arrayElement(['Room Service', 'Recepcionist', 'Manager']),
         description: faker.lorem.sentence({ min: 1, max: 5 }),
         photo: "http://dummyimage.com/137x100.png/5fa2dd/ffffff",
         phone: faker.phone.number(),
-        status: faker.helpers.arrayElement(['Active', 'Inactive'])
+        status: faker.helpers.arrayElement(['Active', 'Inactive']),
+        password: hashPassword
     })
 }
 
