@@ -21,8 +21,8 @@ export const getContact = async (id: any): Promise<ContactInterface | string> =>
 }
 
 export const deleteContact = async (id: any): Promise<string> => {
-    const contactID = await contactModel.findByIdAndDelete(id)
-    if (contactID == null) {
+    const contactData = await contactModel.findByIdAndDelete(id)
+    if (contactData == null) {
         throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         return `Contact with id: ${id} has been deleted`
@@ -34,16 +34,16 @@ export const addContact = async (contact: ContactInterface): Promise<ContactInte
     if (contact === null || contact === undefined) {
         throw new ErrorApp({ status: 400, message: 'Error trying to create new message' })
     }
-    const contactID = await contactModel.create(contact)
-    return contactID
+    const contactData = await contactModel.create(contact)
+    return contactData
 }
 
 export const editContact = async (id: any, contact: ContactInterface): Promise<ContactInterface> => {
-    const contactID = await contactModel.findByIdAndUpdate(id, contact, {new:true})
-    if (contactID == null) {
+    const contactData = await contactModel.findByIdAndUpdate(id, contact, {new:true})
+    if (contactData == null) {
         throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
     } else {
         
-        return contactID
+        return contactData
     }
 }

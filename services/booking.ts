@@ -25,8 +25,8 @@ export const getBooking = async (id: any): Promise<BookingInterface | null> => {
 }
 
 export const deleteBooking = async (id: any): Promise<string> => {
-    const bookingID = await bookingModel.findByIdAndDelete(id)
-    if (bookingID == null) {
+    const bookingData = await bookingModel.findByIdAndDelete(id)
+    if (bookingData == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return `Booking with id: ${id} has been deleted`
@@ -39,15 +39,15 @@ export const addBooking = async (booking: BookingInterface): Promise<BookingInte
     if (booking === null || booking === undefined) {
         throw new ErrorApp({ status: 400, message: 'Error trying to create new booking' })
     }
-    const bookingID = (await bookingModel.create(booking)).populate('room')
-    return bookingID
+    const bookingData = (await bookingModel.create(booking)).populate('room')
+    return bookingData
 }
 
 export const editBooking = async (id: any, booking: BookingInterface): Promise<BookingInterface> => {
-    const bookingID = await bookingModel.findByIdAndUpdate(id, booking, {new: true}).populate('room')
-    if (bookingID == null) {
+    const bookingData = await bookingModel.findByIdAndUpdate(id, booking, {new: true}).populate('room')
+    if (bookingData == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
-        return bookingID
+        return bookingData
     }
 }

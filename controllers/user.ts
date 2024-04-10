@@ -24,7 +24,8 @@ userController.get('/:id', async (req: Request, res: Response, next: NextFunctio
 userController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-        res.json(deleteUser((req.params.id)))
+        const dataUser = await deleteUser((req.params.id))
+        res.json(dataUser)
     } catch (error: any) {
         next(error)
     }
@@ -33,7 +34,8 @@ userController.delete('/:id', async (req: Request, res: Response, next: NextFunc
 userController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-        res.json(editUser((req.params.id), req.body))
+        const dataUser = await editUser((req.params.id), req.body)
+        res.json(dataUser)
     } catch (error: any) {
         next(error)
     }
@@ -42,7 +44,8 @@ userController.put('/:id', async (req: Request, res: Response, next: NextFunctio
 userController.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-        res.json(addUser(req.body))
+        const dataUser = await addUser(req.body)
+        res.json(dataUser)
     } catch (error: any) {
         next(error)
     }

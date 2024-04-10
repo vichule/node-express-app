@@ -21,8 +21,8 @@ export const getUser = async (id: any): Promise<UserInterface> => {
 }
 
 export const deleteUser = async (id: any): Promise<string> => {
-    const userID = await userModel.findByIdAndDelete(id)
-    if (userID == null) {
+    const dataUser = await userModel.findByIdAndDelete(id)
+    if (dataUser == null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
     } else {
         return `user with id: ${id} has been deleted`

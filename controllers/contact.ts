@@ -23,7 +23,8 @@ contactController.get('/:id', async (req: Request, res: Response, next: NextFunc
 
 contactController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(deleteContact((req.params.id)))
+        const dataContact = await deleteContact((req.params.id))
+        res.json(dataContact)
     } catch (error: any) {
         next(error)
     }
@@ -31,7 +32,8 @@ contactController.delete('/:id', async (req: Request, res: Response, next: NextF
 
 contactController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(editContact((req.params.id), req.body))
+        const dataContact = await editContact((req.params.id), req.body)
+        res.json(dataContact)
     } catch (error: any) {
         next(error)
     }
@@ -39,7 +41,8 @@ contactController.put('/:id', async (req: Request, res: Response, next: NextFunc
 
 contactController.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(addContact(req.body))
+        const dataContact = await addContact(req.body)
+        res.json(dataContact)
     } catch (error: any) {
         next(error)
     }

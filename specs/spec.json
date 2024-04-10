@@ -13,9 +13,12 @@
     {
       "url": "https://bdbppxlpje.execute-api.eu-west-3.amazonaws.com/dev/",
       "description": "Default server"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
     }
   ],
-  "basePath": "/",
   "tags": [
     {
       "name": "booking",
@@ -112,7 +115,7 @@
             "description": "ID of booking to return",
             "required": true,
             "type": "string",
-            "example": "66139d38a096d16fdf018507"
+            "example": "6615742675136ee36030f53b"
           }
         ],
         "responses": {
@@ -150,7 +153,7 @@
             "description": "ID of booking to edit",
             "required": true,
             "type": "string",
-            "example": "66139d38a096d16fdf018507"
+            "example": "6615742675136ee36030f53b"
           },
           {
             "in": "body",
@@ -191,7 +194,7 @@
             "description": "booking id to delete",
             "required": true,
             "type": "string",
-            "example": "66139d38a096d16fdf018507"
+            "example": "6615742675136ee36030f53e"
           }
         ],
         "responses": {
@@ -276,7 +279,7 @@
             "description": "ID of contact to return",
             "required": true,
             "type": "string",
-            "example": "66139d3fa096d16fdf01852d"
+            "example": "6615742675136ee36030f51e"
           }
         ],
         "responses": {
@@ -314,7 +317,7 @@
             "description": "ID of contact to edit",
             "required": true,
             "type": "string",
-            "example": "66139d3fa096d16fdf01852d"
+            "example": "6615742675136ee36030f51e"
           },
           {
             "in": "body",
@@ -439,9 +442,8 @@
             "in": "path",
             "description": "ID of room to return",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": "5"
+            "type": "string",
+            "example": "6615742675136ee36030f511"
           }
         ],
         "responses": {
@@ -478,9 +480,8 @@
             "in": "path",
             "description": "ID of room to edit",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": "5"
+            "type": "string",
+            "example": "6615742675136ee36030f511"
           },
           {
             "in": "body",
@@ -520,9 +521,8 @@
             "in": "path",
             "description": "room id to delete",
             "required": true,
-            "type": "integer",
-            "format": "int64",
-            "example": "5"
+            "type": "string",
+            "example": "6615742675136ee36030f511"
           }
         ],
         "responses": {
@@ -776,9 +776,8 @@
           "example": "Morbi quis tortor id nulla ultrices aliquet."
         },
         "room": {
-          "type": "integer",
-          "format": "int64",
-          "example": 5
+          "type": "string",
+          "example": "6615742675136ee36030f511"
         },
         "room_type": {
           "type": "string",

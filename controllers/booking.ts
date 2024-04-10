@@ -24,7 +24,8 @@ bookingController.get('/:id', async (req: Request, res: Response, next: NextFunc
 
 bookingController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(deleteBooking(req.params.id))
+        const dataBooking = await deleteBooking(req.params.id)
+        res.json(dataBooking)
     } catch (error: any) {
         next(error)
     }
@@ -32,7 +33,8 @@ bookingController.delete('/:id', async (req: Request, res: Response, next: NextF
 
 bookingController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(editBooking((req.params.id), req.body))
+        const dataBooking = await editBooking((req.params.id), req.body)
+        res.json(dataBooking)
     } catch (error: any) {
         next(error)
     }
@@ -40,7 +42,8 @@ bookingController.put('/:id', async (req: Request, res: Response, next: NextFunc
 
 bookingController.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(addBooking(req.body))
+        const dataBooking = await addBooking(req.body)
+        res.json(dataBooking)
     } catch (error: any) {
         next(error)
     }

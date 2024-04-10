@@ -14,7 +14,7 @@ roomController.get('/', async (_req: Request, res: Response, next: NextFunction)
 
 roomController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dataRooms = await getRoom(Number(req.params.id))
+        const dataRooms = await getRoom((req.params.id))
         res.json(dataRooms)
     } catch (error: any) {
         next(error)
@@ -23,7 +23,8 @@ roomController.get('/:id', async (req: Request, res: Response, next: NextFunctio
 
 roomController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(deleteRoom(Number(req.params.id)))
+        const dataRoom = await deleteRoom((req.params.id))
+        res.json(dataRoom)
     } catch (error: any) {
         next(error)
     }
@@ -31,7 +32,8 @@ roomController.delete('/:id', async (req: Request, res: Response, next: NextFunc
 
 roomController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(editRoom(Number(req.params.id), req.body))
+        const dataRoom = await editRoom((req.params.id), req.body)
+        res.json(dataRoom)
     } catch (error: any) {
         next(error)
     }
@@ -39,7 +41,8 @@ roomController.put('/:id', async (req: Request, res: Response, next: NextFunctio
 
 roomController.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.json(addRoom(req.body))
+        const dataRoom = await addRoom(req.body)
+        res.json(dataRoom)
     } catch (error: any) {
         next(error)
     }
