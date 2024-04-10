@@ -9,6 +9,7 @@ import path from 'path';
 import { authTokenMiddleware } from './middleware/auth';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { ErrorApp } from './classes/ErrorApp';
 
 dotenv.config();
 const uri = process.env.MONGODB_URI!
@@ -38,7 +39,10 @@ app.use("/rooms", roomController);
 app.use("/users", userController);
 
 
-// app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-//     console.error(err)
-//     return res.status(500).json({error: true, message: 'Error'})
-// })
+app.use((err: ErrorApp, _req: Request, res: Response, _next: NextFunction) => {
+    return res.status(err.status).json({error: true, message: err.message})
+})
+
+// app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+//     new ErrorApp({status: err.message, message:err.status});
+// });
