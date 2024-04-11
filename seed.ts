@@ -1,4 +1,4 @@
-
+b
 import { faker } from '@faker-js/faker';
 import { userModel } from './schemas/UserSchema';
 import { bookingModel } from './schemas/BookingSchema';

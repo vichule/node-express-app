@@ -1,9 +1,7 @@
-import { readData, writeData } from "../util/dataExtract";
 import { UserInterface } from "../interfaces/User";
 import { ErrorApp } from "../classes/ErrorApp";
-import mongoose from "mongoose";
 import { userModel } from "../schemas/UserSchema";
-
+import bcrypt from 'bcryptjs';
 
 
 export const getUsers = async (): Promise<UserInterface[]> => {
@@ -22,7 +20,7 @@ export const getUser = async (id: any): Promise<UserInterface | null> => {
         throw new ErrorApp({ status: 500, message: 'Internal error' })
 
     }
-    
+
 }
 
 export const deleteUser = async (id: any): Promise<UserInterface | null> => {
@@ -32,7 +30,7 @@ export const deleteUser = async (id: any): Promise<UserInterface | null> => {
         throw new ErrorApp({ status: 500, message: 'Internal error' })
 
     }
-    
+
 
 }
 
@@ -46,10 +44,20 @@ export const addUser = async (user: UserInterface): Promise<UserInterface> => {
 
 export const editUser = async (id: any, user: UserInterface): Promise<UserInterface | null> => {
     try {
-        return (await userModel.findByIdAndUpdate(id, user, {new:true}))
+        const userToEdit = await userModel.findById(id)
+        if (userToEdit && !bcrypt.compareSync(user.password, userToEdit.password)) {
+
+            const newPassword = bcrypt.hashSync(user.password, 5)
+            return (await userModel.findByIdAndUpdate(id, { ...user, password: newPassword }, { new: true }))
+
+        } else {
+            return (await userModel.findByIdAndUpdate(id, user, { new: true }))
+        }
+
+
     } catch (error) {
         throw new ErrorApp({ status: 500, message: 'Internal error' })
 
     }
-    
+
 }
