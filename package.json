@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "nodemon",
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "build": "tsc --build",
     "buildrim": "rimraf dist && tsc",
     "deploy": "npm run buildrim && serverless deploy",

@@ -7,43 +7,49 @@ import { userModel } from "../schemas/UserSchema";
 
 
 export const getUsers = async (): Promise<UserInterface[]> => {
-    const usersData = await userModel.find({})
-    return usersData
-}
+    try {
+        return (await userModel.find({}))
+    } catch (error) {
+        throw new ErrorApp({ status: 500, message: 'Internal error' })
 
-export const getUser = async (id: any): Promise<UserInterface> => {
-    const user = await userModel.findById(id)
-    if (user === undefined || user === null) {
-        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
-    } else {
-        return user
     }
 }
 
-export const deleteUser = async (id: any): Promise<string> => {
-    const dataUser = await userModel.findByIdAndDelete(id)
-    if (dataUser == null) {
-        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
-    } else {
-        return `user with id: ${id} has been deleted`
+export const getUser = async (id: any): Promise<UserInterface | null> => {
+    try {
+        return (await userModel.findById(id))
+    } catch (error) {
+        throw new ErrorApp({ status: 500, message: 'Internal error' })
+
     }
+    
+}
+
+export const deleteUser = async (id: any): Promise<UserInterface | null> => {
+    try {
+        return (await userModel.findByIdAndDelete(id))
+    } catch (error) {
+        throw new ErrorApp({ status: 500, message: 'Internal error' })
+
+    }
+    
 
 }
 
 export const addUser = async (user: UserInterface): Promise<UserInterface> => {
-    if (user === null || user === undefined) {
-        throw new ErrorApp({ status: 400, message: 'Error trying to create new user' })
+    try {
+        return (await userModel.create(user))
+    } catch (error) {
+        throw new ErrorApp({ status: 500, message: 'Internal error' })
     }
-    const dataUser = await userModel.create(user)
-    return dataUser
 }
 
-export const editUser = async (id: any, user: UserInterface): Promise<UserInterface> => {
-    const dataUser = await userModel.findByIdAndUpdate(id, user, {new:true})
-    if (dataUser == null) {
-        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
-    } else {
-        
-        return dataUser
+export const editUser = async (id: any, user: UserInterface): Promise<UserInterface | null> => {
+    try {
+        return (await userModel.findByIdAndUpdate(id, user, {new:true}))
+    } catch (error) {
+        throw new ErrorApp({ status: 500, message: 'Internal error' })
+
     }
+    
 }

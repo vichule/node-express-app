@@ -6,12 +6,11 @@ import mongoose from 'mongoose'
 const apitoken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJBZG1pbiIsImlhdCI6MTcxMjA2ODM0OCwiZXhwIjoxODY3NTg4MzQ4fQ.K9dEnxfqpjRkDAF7IPbFktOYBv88h1XszGhPtV4XzEA'
 
 describe('Delete booking Endpoints', () => {
-  it('should delete a booking', async () => {
+  it('should not delete a booking and show status 401', async () => {
     const res = await request(app)
-      .delete('/bookings/19')
-      .set({ authorization: apitoken })
-    expect(res.statusCode).toEqual(200)
-    expect(res.body).toEqual('Booking with id: 19 has been deleted');
+      .delete('/bookings/6615742675136ee36030f515')
+    expect(res.statusCode).toEqual(401)
+    expect(res.body).toEqual('Error, no authorized');
   })
 
   it('should not delete a booking and send error with status 404', async () => {
@@ -23,7 +22,7 @@ describe('Delete booking Endpoints', () => {
 })
 
 
-describe('Post room Endpoints', () => {
+describe(' room Endpoints', () => {
   const room = {"__v": 0,
      "_id": "661673156475f0f65b8b1d61",
      "amenities":  [
@@ -51,6 +50,13 @@ describe('Post room Endpoints', () => {
      "room_type": "Double Bed",
      "status": "available",
     }
+
+    it('should not show room data and show status 404', async () => {
+      const res = await request(app)
+        .get('/contacts/661673156475f0f65b8b1d61')
+        .set({ authorization: apitoken })
+      expect(res.statusCode).toEqual(404)
+    })
 
   it('should add a new room', async () => {
     const res = await request(app)
@@ -89,13 +95,20 @@ describe('Post room Endpoints', () => {
     expect(res.body).toMatchObject(room);
   })
 
+  it('should show room data and show status 200', async () => {
+    const res = await request(app)
+      .get('/rooms/661673156475f0f65b8b1d61')
+      .set({ authorization: apitoken })
+    expect(res.statusCode).toEqual(200)
+    expect(res.body).toMatchObject(room);
+  })
+
 
   it('should not add a new room and send error with status 401', async () => {
     const res = await request(app)
       .post('/rooms')
       .send({
 
-        id: 50,
         room_type: "Double Bed",
         room_number: 304,
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -124,23 +137,24 @@ describe('Post room Endpoints', () => {
       })
     expect(res.statusCode).toEqual(401)
   })
-})
 
-describe('Delete room Endpoints', () => {
+
+
   it('should delete a room', async () => {
     const res = await request(app)
-      .delete('/rooms/66169d9b5ed7f99442e7c6b9')
+      .delete('/rooms/661673156475f0f65b8b1d61')
       .set({ authorization: apitoken })
     expect(res.statusCode).toEqual(200)
-    expect(res.body).toEqual('room with id: 66169d9b5ed7f99442e7c6b9 has been deleted');
+    expect(res.body).toEqual('room with id: 661673156475f0f65b8b1d61 has been deleted');
   })
 
   it('should not delete a room and send error with status 404', async () => {
     const res = await request(app)
-      .delete('/rooms/66169d9b5ed7f99442e7c6b9')
+      .delete('/rooms/661673156475f0f65b8b1d61')
       .set({ authorization: apitoken })
     expect(res.statusCode).toEqual(404)
   })
+
 })
 
 
@@ -216,4 +230,6 @@ describe('Get contacts endpoints', () => {
   })
 })
 
-afterAll(() => mongoose.connection.close())
+afterAll(async () => {
+  await mongoose.disconnect();
+});

@@ -34,9 +34,7 @@ roomController.delete('/:id', async (req: Request, res: Response, next: NextFunc
         if (dataRoom == null) {
             throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
         } else {
-
-            return `room with id: ${req.params.id} has been deleted`
-            // res.json(dataRoom)
+            res.json(`room with id: ${req.params.id} has been deleted`)
         }
 
 
