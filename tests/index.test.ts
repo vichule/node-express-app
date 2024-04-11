@@ -1,6 +1,5 @@
 import request from 'supertest'
 import { app } from '../app'
-import { roomModel } from '../schemas/RoomSchema'
 import mongoose from 'mongoose'
 
 const apitoken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJBZG1pbiIsImlhdCI6MTcxMjA2ODM0OCwiZXhwIjoxODY3NTg4MzQ4fQ.K9dEnxfqpjRkDAF7IPbFktOYBv88h1XszGhPtV4XzEA'
