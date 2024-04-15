@@ -6,7 +6,7 @@ import { generateAccessToken } from '../util/generateToken';
 
 export const authRouter = express.Router()
 
-authRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+authRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { username, password } = req.body
         const user = await userModel.findOne({ email: username })

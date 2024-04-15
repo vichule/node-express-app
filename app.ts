@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('specs'))
 
 app.options('*', cors())
+app.use(cors())
 
 app.use("/", homeRouter)
 app.use("/login", authRouter)
