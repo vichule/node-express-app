@@ -1,6 +1,6 @@
 import { UserInterface } from "../interfaces/User";
 import { ErrorApp } from "../classes/ErrorApp";
-import { userModel } from "../schemas/UserSchema";
+import { userModel } from "../models/UserModel";
 import bcrypt from 'bcryptjs';
 
 

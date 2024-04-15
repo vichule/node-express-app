@@ -1,8 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express'
-import { generateAccessToken } from '../middleware/auth'
-import { userModel } from '../schemas/UserSchema'
+import { userModel } from '../models/UserModel'
 import bcrypt from 'bcryptjs';
 import { ErrorApp } from '../classes/ErrorApp';
+import { generateAccessToken } from '../util/generateToken';
 
 export const authRouter = express.Router()
 
@@ -14,7 +14,7 @@ authRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
         if (user === null) {
             throw new ErrorApp({ status: 404, message: "User not found" })
         } else if (!bcrypt.compareSync(password, user.password)) {
-            throw new ErrorApp({ status: 500, message: "Wrong password" })
+            throw new ErrorApp({ status: 403, message: "Wrong password" })
         }
         const token = generateAccessToken(user.email)
         return res.json(token)

@@ -1,7 +1,7 @@
 import { ContactInterface } from "../interfaces/Contact";
 import { ErrorApp } from "../classes/ErrorApp";
 import mongoose from "mongoose";
-import { contactModel } from "../schemas/ContactSchema";
+import { contactModel } from "../models/ContactModel";
 
 
 

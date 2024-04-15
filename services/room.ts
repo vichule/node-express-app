@@ -1,6 +1,6 @@
 import { RoomInterface } from "../interfaces/Room";
 import { ErrorApp } from "../classes/ErrorApp";
-import { roomModel } from "../schemas/RoomSchema";
+import { roomModel } from "../models/RoomModel";
 
 
 

@@ -1,9 +1,9 @@
 
 import { faker } from '@faker-js/faker';
-import { userModel } from './schemas/UserSchema';
-import { bookingModel } from './schemas/BookingSchema';
-import { roomModel } from './schemas/RoomSchema';
-import { contactModel } from './schemas/ContactSchema';
+import { userModel } from './models/UserModel';
+import { bookingModel } from './models/BookingModel';
+import { roomModel } from './models/RoomModel';
+import { contactModel } from './models/ContactModel';
 import { MongoClient } from "mongodb";
 import { RoomInterface } from './interfaces/Room';
 import { ContactInterface } from './interfaces/Contact';

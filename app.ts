@@ -5,11 +5,11 @@ import { roomController } from './controllers/room';
 import { userController } from './controllers/user';
 import { homeRouter } from './controllers/home';
 import { authRouter } from './controllers/login';
-import path from 'path';
 import { authTokenMiddleware } from './middleware/auth';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { ErrorApp } from './classes/ErrorApp';
+import cors from 'cors';
 
 dotenv.config();
 const uri = process.env.MONGODB_URI!
@@ -28,6 +28,9 @@ export const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('specs'))
+
+app.options('*', cors())
+
 app.use("/", homeRouter)
 app.use("/login", authRouter)
 
@@ -39,10 +42,6 @@ app.use("/rooms", roomController);
 app.use("/users", userController);
 
 
-app.use((err: ErrorApp, _req: Request, res: Response, _next: NextFunction) => {
-    return res.status(err.status).json({error: true, message: err.message})
+app.use((err: ErrorApp, _req: Request, _res: Response, _next: NextFunction) => {
+    throw new ErrorApp({status: err.status || 500, message: err.status ? err.message : 'Internal server error'})
 })
-
-// app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-//     new ErrorApp({status: err.message, message:err.status});
-// });
