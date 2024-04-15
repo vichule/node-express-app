@@ -53,7 +53,7 @@ export const editUser = async (id: any, user: UserInterface): Promise<UserInterf
             return (await userModel.findByIdAndUpdate(id, { ...user, password: newPassword }, { new: true }))
 
         } else {
-            return (await userModel.findByIdAndUpdate(id, user, { new: true }))
+            return (await userModel.findByIdAndUpdate(id, {...user, password: userToEdit.password}, { new: true }))
         }
 
 
