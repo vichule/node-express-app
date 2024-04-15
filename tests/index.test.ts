@@ -158,7 +158,7 @@ describe(' room Endpoints', () => {
 
 
 describe('Put users Endpoints', () => {
-  const user = { "_id": "6615742675136ee36030f52d", "description": "Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.", "email": "lphittiplace1@vistaprint.com", "first_name": "Manolo", "job": "Recepcionist", "last_name": "puroLado", "password": "$2a$05$Hk4BVkjxwpq1mkxm79026O2cLmfXljErfdS7tp/0VRM5uDoqH.pGK", "phone": "530-636-5717", "photo": "http://dummyimage.com/148x100.png/dddddd/000000", "start_date": "2024-01-20", "status": "Inactive" }
+  const user = { "_id": "6615742675136ee36030f52d", "description": "Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.", "email": "lphittiplace1@vistaprint.com", "first_name": "Manolo", "job": "Recepcionist", "last_name": "puroLado", "password": "adminadmin", "phone": "530-636-5717", "photo": "http://dummyimage.com/148x100.png/dddddd/000000", "start_date": "2024-01-20", "status": "Inactive" }
   it('should edit the user with id 6615742675136ee36030f52d and send 200 status', async () => {
     const res = await request(app)
       .put('/users/6615742675136ee36030f52d')
@@ -172,7 +172,9 @@ describe('Put users Endpoints', () => {
         "description": "Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.",
         "photo": "http://dummyimage.com/148x100.png/dddddd/000000",
         "phone": "530-636-5717",
-        "status": "Inactive"
+        "status": "Inactive",
+        "job": "Recepcionist",
+        "password": "adminadmin"
 
       })
     expect(res.statusCode).toEqual(200)

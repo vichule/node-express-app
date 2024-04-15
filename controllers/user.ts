@@ -1,6 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { addUser, deleteUser, editUser, getUser, getUsers } from '../services/user'
-import { ErrorApp } from '../classes/ErrorApp'
 
 export const userController = express.Router()
 
@@ -26,7 +25,7 @@ userController.get('/:id', async (req: Request, res: Response, next: NextFunctio
 
 userController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dataUser = await deleteUser((req.params.id))
+        const dataUser = await deleteUser(req.params.id)
         res.json(`user with id: ${req.params.id} has been deleted`)
 
     } catch (error: any) {
@@ -36,7 +35,7 @@ userController.delete('/:id', async (req: Request, res: Response, next: NextFunc
 
 userController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dataUser = await editUser((req.params.id), req.body)
+        const dataUser = await editUser(req.params.id, req.body)
         res.json(dataUser)
         
         
