@@ -5,47 +5,49 @@ import bcrypt from 'bcryptjs';
 
 
 export const getUsers = async (): Promise<UserInterface[]> => {
-    try {
-        return (await userModel.find({}))
-    } catch (error) {
-        throw new ErrorApp({ status: 500, message: 'Internal error' })
-
-    }
+    return (await userModel.find({}))
+    
 }
 
 export const getUser = async (id: any): Promise<UserInterface | null> => {
-    try {
-        return (await userModel.findById(id))
-    } catch (error) {
-        throw new ErrorApp({ status: 500, message: 'Internal error' })
+    const userData = (await userModel.findById(id))
+    if(userData === null){
+        throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
 
+    }else{
+        return userData
     }
+    
 
 }
 
 export const deleteUser = async (id: any): Promise<UserInterface | null> => {
-    try {
-        return (await userModel.findByIdAndDelete(id))
-    } catch (error) {
-        throw new ErrorApp({ status: 500, message: 'Internal error' })
-
+    const userData = (await userModel.findByIdAndDelete(id))
+    if (userData == null) {
+        throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
+    } else {
+        return userData
     }
 
 
 }
 
 export const addUser = async (user: UserInterface): Promise<UserInterface> => {
-    try {
-        return (await userModel.create(user))
-    } catch (error) {
-        throw new ErrorApp({ status: 500, message: 'Internal error' })
+    const userData = (await userModel.create(user))
+    if (userData == null) {
+        throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
+    } else {
+        return userData
     }
 }
 
 export const editUser = async (id: any, user: UserInterface): Promise<UserInterface | null> => {
-    try {
         const userToEdit = await userModel.findById(id)
-        if (userToEdit && !bcrypt.compareSync(user.password, userToEdit.password)) {
+        if(userToEdit === null){
+            throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
+        }
+
+        if (!bcrypt.compareSync(user.password, userToEdit.password)) {
 
             const newPassword = bcrypt.hashSync(user.password, 5)
             return (await userModel.findByIdAndUpdate(id, { ...user, password: newPassword }, { new: true }))
@@ -54,10 +56,5 @@ export const editUser = async (id: any, user: UserInterface): Promise<UserInterf
             return (await userModel.findByIdAndUpdate(id, user, { new: true }))
         }
 
-
-    } catch (error) {
-        throw new ErrorApp({ status: 500, message: 'Internal error' })
-
-    }
 
 }

@@ -5,7 +5,6 @@ import { ErrorApp } from '../classes/ErrorApp'
 export const bookingController = express.Router()
 
 bookingController.get('/', async (_req: Request, res: Response, next: NextFunction) => {
-
     try {
         const dataBookings = await getBookings()
         res.json(dataBookings)

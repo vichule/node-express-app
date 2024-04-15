@@ -16,7 +16,7 @@ export const getBooking = async (id: any): Promise<BookingInterface | null> => {
 
         const bookingData = (await bookingModel.findById(id).populate('room'))
     if (bookingData === null) {
-        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
+        throw new ErrorApp({ status: 404, message: 'Error, booking does not exist' })
     }else{
         return bookingData
     }
@@ -29,7 +29,7 @@ export const deleteBooking = async (id: any): Promise<BookingInterface | null> =
     const bookingData = (await bookingModel.findByIdAndDelete(id))
 
     if (bookingData === null){
-        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
+        throw new ErrorApp({ status: 404, message: 'Error, booking does not exist' })
     }else{
         return bookingData
     }
@@ -42,7 +42,7 @@ export const deleteBooking = async (id: any): Promise<BookingInterface | null> =
 export const addBooking = async (booking: BookingInterface): Promise<BookingInterface> => {
         const bookingData = (await bookingModel.create(booking)).populate('room')
     if(bookingData === null){
-        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
+        throw new ErrorApp({ status: 404, message: 'Error, booking does not exist' })
     }else{
         return bookingData
     }
@@ -53,7 +53,7 @@ export const editBooking = async (id: any, booking: BookingInterface): Promise<B
     const bookingData = (await bookingModel.findByIdAndUpdate(id, booking, { new: true }).populate('room'))
 
     if(bookingData === null){
-        throw new ErrorApp({ status: 404, message: 'Error, booking doesnt exist' })
+        throw new ErrorApp({ status: 404, message: 'Error, booking does not exist' })
     }else{
         return bookingData
     }

@@ -16,12 +16,7 @@ contactController.get('/', async (_req: Request, res: Response, next: NextFuncti
 contactController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const dataContacts = await getContact(req.params.id)
-        if (dataContacts === undefined || dataContacts === null) {
-            throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
-
-        } else {
-            res.json(dataContacts)
-        }
+        res.json(dataContacts)
         
         
     } catch (error: any) {
@@ -32,11 +27,7 @@ contactController.get('/:id', async (req: Request, res: Response, next: NextFunc
 contactController.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const dataContact = await deleteContact((req.params.id))
-        if (dataContact == null) {
-            throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
-        } else {
-            res.json(`Contact with id: ${req.params.id} has been deleted`)
-        }
+        res.json(`Contact with id: ${req.params.id} has been deleted`)
         
         
     } catch (error: any) {
@@ -47,11 +38,7 @@ contactController.delete('/:id', async (req: Request, res: Response, next: NextF
 contactController.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const dataContact = await editContact((req.params.id), req.body)
-        if (dataContact == null) {
-            throw new ErrorApp({status: 404, message: 'Error, booking doesnt exist'})
-        } else {
-            res.json(dataContact)
-        }
+        res.json(dataContact)
         
         
     } catch (error: any) {
@@ -62,9 +49,6 @@ contactController.put('/:id', async (req: Request, res: Response, next: NextFunc
 contactController.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const dataContact = await editContact((req.params.id), req.body)
-        if (dataContact === null || dataContact === undefined) {
-            throw new ErrorApp({ status: 400, message: 'Error trying to create new message' })
-        }
         res.json(dataContact)
         
     } catch (error: any) {
