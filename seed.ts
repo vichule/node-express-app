@@ -29,9 +29,9 @@ const createRoom = (): RoomInterface => {
         discount: faker.number.int({ min: 0, max: 99 }),
         cancellation: faker.lorem.text(),
         photos: [
-            "https://plus.unsplash.com/premium_photo-1661875135365-16aab794632f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aG90ZWwlMjByb29tJTIwc3VpdGV8ZW58MHx8MHx8fDA%3D",
-            "https://plus.unsplash.com/premium_photo-1661964402307-02267d1423f5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGhvdGVsJTIwcm9vbSUyMHN1aXRlfGVufDB8fDB8fHww",
-            "https://plus.unsplash.com/premium_photo-1661963630748-3de7ab820570?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c3VpdGV8ZW58MHx8MHx8fDA%3D"
+            faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
+            faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
+            faker.image.urlLoremFlickr({ category: 'hotel,bedroom' })
         ],
         amenities: faker.helpers.arrayElements([
             "Air conditioner",
@@ -118,7 +118,7 @@ const createBooking = (ROOMS: RoomInterface[]) => {
     })
 }
 
-export const BOOKINGS: BookingInterface[] = faker.helpers.multiple(()=>createBooking(ROOMS), {
+export const BOOKINGS: BookingInterface[] = faker.helpers.multiple(() => createBooking(ROOMS), {
     count: 15,
 });
 
