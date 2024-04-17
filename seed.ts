@@ -65,8 +65,8 @@ const createContact = (): ContactInterface => {
         phone: faker.phone.number(),
         subject: faker.lorem.sentence({ min: 1, max: 5 }),
         message: faker.lorem.text(),
-        date: faker.date.recent(),
-        photo: "http://dummyimage.com/240x100.png/cc0000/ffffff",
+        date: faker.date.recent().toISOString().slice(0,10),
+        photo: faker.image.urlLoremFlickr({ category: 'people' }),
         status: faker.datatype.boolean(0.5)
     })
 }
@@ -85,10 +85,10 @@ const createUser = () => {
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
         email: userEmail,
-        start_date: faker.date.past(),
+        start_date: faker.date.past().toISOString().slice(0,10),
         job: faker.helpers.arrayElement(['Room Service', 'Recepcionist', 'Manager']),
         description: faker.lorem.sentence({ min: 1, max: 5 }),
-        photo: "http://dummyimage.com/137x100.png/5fa2dd/ffffff",
+        photo: faker.image.urlLoremFlickr({ category: 'people' }),
         phone: faker.phone.number(),
         status: faker.helpers.arrayElement(['Active', 'Inactive']),
         password: hashPassword
@@ -109,9 +109,9 @@ const createBooking = (ROOMS: RoomInterface[]) => {
     return new bookingModel({
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
-        order_date: faker.date.recent(),
-        check_in: faker.date.recent(),
-        check_out: faker.date.soon(),
+        order_date: faker.date.recent().toISOString().slice(0,10),
+        check_in: faker.date.recent().toISOString().slice(0,10),
+        check_out: faker.date.soon().toISOString().slice(0,10),
         notes: faker.lorem.sentence({ min: 1, max: 5 }),
         room: randomId(ROOMS),
         status: faker.helpers.arrayElement(['Check-in', 'Check-out', 'In progress', 'Cancelled'])
