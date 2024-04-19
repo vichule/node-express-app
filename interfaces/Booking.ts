@@ -9,4 +9,5 @@ export interface BookingInterface {
     notes: string,
     room: Types.ObjectId,
     status: string, 
+    discount: number
 }

@@ -33,7 +33,8 @@ export const deleteUser = async (id: any): Promise<UserInterface | null> => {
 }
 
 export const addUser = async (user: UserInterface): Promise<UserInterface> => {
-    const userData = (await userModel.create(user))
+    const hashedPassword = bcrypt.hashSync(user.password, 5)
+    const userData = (await userModel.create({ ...user, password: hashedPassword }))
     if (userData == null) {
         throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
     } else {

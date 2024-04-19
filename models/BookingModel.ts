@@ -11,6 +11,7 @@ const bookingSchema = new Schema<BookingInterface>({
     room: { type: Schema.Types.ObjectId, ref: 'rooms' },
     notes: { type: String, required: false},
     status: { type: String, required: true},
+    discount: {type: Number, required: true}
 })
 
 export const bookingModel = model<BookingInterface>('bookings', bookingSchema)
