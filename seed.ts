@@ -114,7 +114,8 @@ const createBooking = (ROOMS: RoomInterface[]) => {
         check_out: faker.date.soon().toISOString().slice(0,10),
         notes: faker.lorem.sentence({ min: 1, max: 5 }),
         room: randomId(ROOMS),
-        status: faker.helpers.arrayElement(['Check-in', 'Check-out', 'In progress', 'Cancelled'])
+        status: faker.helpers.arrayElement(['Check-in', 'Check-out', 'In progress', 'Cancelled']),
+        discount: faker.number.int({ min: 0, max: 99 })
     })
 }
 

@@ -43,11 +43,9 @@ export const addUser = async (user: UserInterface): Promise<UserInterface> => {
 
 export const editUser = async (id: any, user: UserInterface): Promise<UserInterface | null> => {
     const userToEdit = await userModel.findById(id)
-    let emptyPassword = false
     if (userToEdit === null) {
         throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
     }
-
 
     if (!bcrypt.compareSync(user.password, userToEdit.password) && user.password !== '') {
 
