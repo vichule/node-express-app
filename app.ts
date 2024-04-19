@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('specs'))
 
 app.options('*', cors())
-app.use(cors({"origin": "http://bdbppxlpje.execute-api.eu-west-3.amazonaws.com"}))
+app.use(cors({"origin": "http://dashboard-miranda-v.s3-website.eu-west-3.amazonaws.com"}))
 
 app.use("/", homeRouter)
 app.use("/login", authRouter)
