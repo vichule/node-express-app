@@ -1,6 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { addRoom, deleteRoom, editRoom, getRoom, getRooms } from '../services/room'
-import { ErrorApp } from '../classes/ErrorApp'
 
 export const roomController = express.Router()
 
@@ -16,7 +15,6 @@ roomController.get('/', async (_req: Request, res: Response, next: NextFunction)
 roomController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const dataRooms = await getRoom((req.params.id))
-        console.log(dataRooms)
         res.json(dataRooms)
 
     } catch (error: any) {

@@ -34,7 +34,7 @@ export const deleteRoom = async (id: any): Promise<RoomInterface | null> => {
 export const addRoom = async (room: RoomInterface): Promise<RoomInterface> => {
     const roomData = (await roomModel.create(room))
     if (roomData === null){
-        throw new ErrorApp({ status: 404, message: 'Error, room does not exist' })
+        throw new ErrorApp({ status: 404, message: 'Error, room data does not exist' })
 
     }else{
         return roomData
