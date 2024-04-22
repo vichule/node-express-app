@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('specs'))
 
-app.options('*', cors())
+//app.options('*', cors())
 app.use(cors({"origin": "http://dashboard-miranda-v.s3-website.eu-west-3.amazonaws.com"}))
 
 app.use("/", homeRouter)
