@@ -6,7 +6,8 @@ dotenv.config()
 
     const myPool = mysql.createPool({
         host: process.env.HOSTNAME,
-        user: process.env.USERNAME,
+        port: Number(process.env.PORT),
+        user: process.env.USER,
         database: process.env.DBNAME,
         password: process.env.PASSWRD,
         waitForConnections: true,
@@ -18,6 +19,6 @@ export const connect = async () =>{
     return await myPool.getConnection()
 }
 
-export const disconnect = async (conn: mysql.PoolConnection) =>{
-    await myPool.releaseConnection(conn)
+export const disconnect = (conn: mysql.PoolConnection) =>{
+    myPool.releaseConnection(conn)
 }

@@ -11,6 +11,11 @@ import { UserInterface } from './interfaces/User';
 import { BookingInterface } from './interfaces/Booking';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import { connect, disconnect } from './util/connection';
+import { createTableQuery, deleteTableQuery, insertAmenitiesQuery, insertContactQuery, insertPhotosQuery, insertUserQuery } from './util/databaseQuery';
+import mysql from 'mysql2/promise'
+import { exit } from 'process';
+import { amenitiesQuery, bookingsQuery, contactsQuery, photosQuery, roomAmenitiesQuery, roomPicsQuery, roomsQuery, usersQuery } from './util/dataQueries';
 
 dotenv.config();
 
@@ -65,7 +70,7 @@ const createContact = (): ContactInterface => {
         phone: faker.phone.number(),
         subject: faker.lorem.sentence({ min: 1, max: 5 }),
         message: faker.lorem.text(),
-        date: faker.date.recent().toISOString().slice(0,10),
+        date: faker.date.recent().toISOString().slice(0, 10),
         photo: faker.image.urlLoremFlickr({ category: 'people' }),
         status: faker.datatype.boolean(0.5)
     })
@@ -78,14 +83,14 @@ export const CONTACTS: ContactInterface[] = faker.helpers.multiple(createContact
 const createUser = () => {
     const rawPassword = faker.string.alphanumeric(10)
     const userEmail = faker.internet.email()
-    console.log(`user: ${userEmail} with password: ${rawPassword}`)
+    //console.log(`user: ${userEmail} with password: ${rawPassword}`)
     const hashPassword = bcrypt.hashSync(rawPassword, 5)
 
     return new userModel({
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
         email: userEmail,
-        start_date: faker.date.past().toISOString().slice(0,10),
+        start_date: faker.date.past().toISOString().slice(0, 10),
         job: faker.helpers.arrayElement(['Room Service', 'Recepcionist', 'Manager']),
         description: faker.lorem.sentence({ min: 1, max: 5 }),
         photo: faker.image.urlLoremFlickr({ category: 'people' }),
@@ -109,9 +114,9 @@ const createBooking = (ROOMS: RoomInterface[]) => {
     return new bookingModel({
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
-        order_date: faker.date.recent().toISOString().slice(0,10),
-        check_in: faker.date.recent().toISOString().slice(0,10),
-        check_out: faker.date.soon().toISOString().slice(0,10),
+        order_date: faker.date.recent().toISOString().slice(0, 10),
+        check_in: faker.date.recent().toISOString().slice(0, 10),
+        check_out: faker.date.soon().toISOString().slice(0, 10),
         notes: faker.lorem.sentence({ min: 1, max: 5 }),
         room: randomId(ROOMS),
         status: faker.helpers.arrayElement(['Check-in', 'Check-out', 'In progress', 'Cancelled']),
@@ -123,32 +128,54 @@ export const BOOKINGS: BookingInterface[] = faker.helpers.multiple(() => createB
     count: 15,
 });
 
-async function connection() {
+const dropTables = async (conn: mysql.PoolConnection) => {
+    deleteTableQuery(conn, 'room_amenities')
+    deleteTableQuery(conn, 'room_photos')
+    deleteTableQuery(conn, 'bookings')
+    deleteTableQuery(conn, 'amenities')
+    deleteTableQuery(conn, 'photos')
+    deleteTableQuery(conn, 'rooms')
+    deleteTableQuery(conn, 'users')
+    deleteTableQuery(conn, 'contacts')
+    await conn.commit()
+}
 
+const createTables = async (conn: mysql.PoolConnection) => {
+    createTableQuery(conn, amenitiesQuery)
+    createTableQuery(conn, photosQuery)
+    createTableQuery(conn, roomsQuery)
+    createTableQuery(conn, roomPicsQuery)
+    createTableQuery(conn, roomAmenitiesQuery)
+    createTableQuery(conn, usersQuery)
+    createTableQuery(conn, contactsQuery)
+    createTableQuery(conn, bookingsQuery)
+    await conn.commit()
+}
+
+const insertTablesData = async (conn: mysql.PoolConnection) =>{
+    //insertDataQuery(conn, 'amenities', 'name', 'Air conditioner')
+    insertAmenitiesQuery(conn)
+    insertPhotosQuery(conn)
+    insertUserQuery(conn)
+    insertContactQuery(conn)
+    await conn.commit()
+}
+
+const connection = async () => {
+    
+
+    const conn = await connect()
     try {
-        await client.connect();
-        console.log("Connected correctly to server");
+       await dropTables(conn)
+       await createTables(conn)
+       await insertTablesData(conn)
+        disconnect(conn)
+        exit(1)
 
-        const roomCollection = client.db("Miranda-DB").collection("rooms");
-        const contactCollection = client.db("Miranda-DB").collection("contacts");
-        const userCollection = client.db("Miranda-DB").collection("users");
-        const bookingCollection = client.db("Miranda-DB").collection("bookings");
+    } catch (error) {
+        disconnect(conn)
+        console.log(error)
 
-        await roomCollection.drop()
-        await contactCollection.drop()
-        await userCollection.drop()
-        await bookingCollection.drop()
-
-        await roomCollection.insertMany(ROOMS)
-        await contactCollection.insertMany(CONTACTS)
-        await userCollection.insertMany(USERS)
-        await bookingCollection.insertMany(BOOKINGS)
-
-
-        client.close()
-
-    } catch (err: any) {
-        console.log(err.stack);
     }
 }
 
