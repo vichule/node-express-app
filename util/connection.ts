@@ -16,7 +16,12 @@ dotenv.config()
 
 
 export const connect = async () =>{
-    return await myPool.getConnection()
+    try {
+        return await myPool.getConnection()
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
 export const disconnect = (conn: mysql.PoolConnection) =>{

@@ -12,7 +12,7 @@ import { BookingInterface } from './interfaces/Booking';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { connect, disconnect } from './util/connection';
-import { createTableQuery, deleteTableQuery, insertAmenitiesQuery, insertContactQuery, insertPhotosQuery, insertUserQuery } from './util/databaseQuery';
+import { createTableQuery, deleteTableQuery, insertAmenitiesQuery, insertBookingQuery, insertContactQuery, insertPhotosQuery, insertRoomQuery, insertUserQuery } from './util/databaseQuery';
 import mysql from 'mysql2/promise'
 import { exit } from 'process';
 import { amenitiesQuery, bookingsQuery, contactsQuery, photosQuery, roomAmenitiesQuery, roomPicsQuery, roomsQuery, usersQuery } from './util/dataQueries';
@@ -108,7 +108,7 @@ const createBooking = (ROOMS: RoomInterface[]) => {
 
     const randomId = (rooms: RoomInterface[]) => {
         const randNum = Math.floor(Math.random() * rooms.length)
-        return rooms[randNum]._id
+        return rooms[randNum].id
     }
 
     return new bookingModel({
@@ -154,10 +154,12 @@ const createTables = async (conn: mysql.PoolConnection) => {
 
 const insertTablesData = async (conn: mysql.PoolConnection) =>{
     //insertDataQuery(conn, 'amenities', 'name', 'Air conditioner')
-    insertAmenitiesQuery(conn)
-    insertPhotosQuery(conn)
-    insertUserQuery(conn)
-    insertContactQuery(conn)
+    await insertAmenitiesQuery(conn)
+    await insertPhotosQuery(conn)
+    await insertUserQuery(conn)
+    await insertContactQuery(conn)
+    await insertRoomQuery(conn)
+    await insertBookingQuery(conn)
     await conn.commit()
 }
 
@@ -166,14 +168,14 @@ const connection = async () => {
 
     const conn = await connect()
     try {
-       await dropTables(conn)
-       await createTables(conn)
-       await insertTablesData(conn)
-        disconnect(conn)
+       await dropTables(conn!)
+       await createTables(conn!)
+       await insertTablesData(conn!)
+        disconnect(conn!)
         exit(1)
 
     } catch (error) {
-        disconnect(conn)
+        disconnect(conn!)
         console.log(error)
 
     }

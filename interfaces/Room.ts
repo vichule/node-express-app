@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export interface RoomInterface {
-    _id: Types.ObjectId,
+    id: number,
     room_type: string,
     room_number: number,
     description: string,
