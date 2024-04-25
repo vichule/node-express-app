@@ -1,7 +1,8 @@
-import mysql from 'mysql2/promise'
+import mysql, { RowDataPacket } from 'mysql2/promise'
 import { faker } from '@faker-js/faker'
 import bcrypt from 'bcryptjs';
 import { RoomInterface } from '../interfaces/Room';
+
 
 export const createTableQuery = async (conn: mysql.PoolConnection, query: string) => {
   await conn.execute(query);
@@ -12,9 +13,6 @@ export const deleteTableQuery = async (conn: mysql.PoolConnection, name: string)
   await conn.execute(`DROP TABLE IF EXISTS ${name}`);
 }
 
-// export const insertDataQuery = async (conn: mysql.PoolConnection, name: string, field: string, value: string | boolean | number | Date) => {
-//   await conn.execute(`USE mirandab;INSERT INTO ${name}(${field}) VALUES('${value}');`)
-// }
 
 export const insertAmenitiesQuery = async (conn: mysql.PoolConnection) => {
   const amenities = ["Air conditioner", "Breakfast", "Cleaning", "Grocery", "Shop near",
@@ -132,6 +130,45 @@ export const insertBookingQuery = async (conn: mysql.PoolConnection) => {
     )`
     //console.log(query)
     conn.execute(query)
-    
+
+  }
+}
+
+export const insertRoomAmenities = async (conn: mysql.PoolConnection) => {
+  const [results, fields] = await conn.execute(`SELECT id FROM rooms`)
+  const roomsId = results as RowDataPacket
+  const rooms = roomsId.map((row: any) => row.id)
+  const [AResults, AFields] = await conn.execute(`SELECT id FROM amenities`)
+  const amenitiesId = AResults as RowDataPacket
+  const amenities = amenitiesId.map((row: any) => row.id)
+
+  // console.log(rooms)
+  // console.log(amenities)
+  // console.log(rooms.length)
+  // console.log(amenities.length)
+  for (let i = 0; i < 100; i++) {
+    conn.execute(`INSERT INTO room_amenities(room_id,amenities_id)
+    VALUES(
+      '${faker.number.int({ min: 1, max: rooms.length })}',
+      '${faker.number.int({ min: 1, max: amenities.length })}'
+    )`)
+  }
+
+}
+
+export const insertRoomPhotos = async (conn: mysql.PoolConnection) => {
+  const [results, fields] = await conn.execute(`SELECT id FROM rooms`)
+  const roomsId = results as RowDataPacket
+  const rooms = roomsId.map((row: any) => row.id)
+  const [PResults, PFields] = await conn.execute(`SELECT id FROM photos`)
+  const photosId = PResults as RowDataPacket
+  const photos = photosId.map((row: any) => row.id)
+
+  for (let i = 0; i < 10; i++) {
+    conn.execute(`INSERT INTO room_photos(room_id,photo_id)
+    VALUES(
+      '${faker.number.int({ min: 1, max: rooms.length })}',
+      '${faker.number.int({ min: 1, max: photos.length })}'
+    )`)
   }
 }

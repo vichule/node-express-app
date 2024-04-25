@@ -1,31 +1,70 @@
 import { RoomInterface } from "../interfaces/Room";
 import { ErrorApp } from "../classes/ErrorApp";
 import { roomModel } from "../models/RoomModel";
+import { connect, disconnect } from "../util/connection";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 
 
 
 
 export const getRooms = async (): Promise<RoomInterface[]> => {
-    return (await roomModel.find({}))
+    const conn = await connect()
+
+    const [results, fields] = await conn.execute(`SELECT 
+    r.id AS room_id, r.room_type, r.room_number, r.description, r.price,
+    r.offer, r.discount, r.cancellation, r.status,
+    json_arrayagg(p.photo) AS photo_url,
+    json_arrayagg(a.name) AS amenity_name
+    FROM rooms r
+    LEFT JOIN room_photos rp ON r.id = rp.room_id
+    LEFT JOIN photos p ON rp.photo_id = p.id
+    LEFT JOIN room_amenities ra ON r.id = ra.room_id
+    LEFT JOIN amenities a ON ra.amenities_id = a.id
+    GROUP BY r.id;`)
+    const rooms = results as RoomInterface[]
+    disconnect(conn)
+    return rooms
 }
 
-export const getRoom = async (id: any): Promise<RoomInterface | null> => {
-    const roomData = (await roomModel.findById(id))
-    if (roomData === null){
+export const getRoom = async (id: any): Promise<RowDataPacket> => {
+    const conn = await connect()
+    const query = `SELECT 
+    r.id AS room_id, r.room_type, r.room_number, r.description, 
+    r.price, r.offer, r.discount, r.cancellation, r.status,
+    json_arrayagg(p.photo) AS photo_url,
+    json_arrayagg(a.name) AS amenity_name
+    FROM rooms r
+    LEFT JOIN room_photos rp ON r.id = rp.room_id
+    LEFT JOIN photos p ON rp.photo_id = p.id
+    LEFT JOIN room_amenities ra ON r.id = ra.room_id
+    LEFT JOIN amenities a ON ra.amenities_id = a.id
+    WHERE r.id = ?
+    GROUP BY r.id;`
+    const prepared = await conn.prepare(query)
+    const [results, fields] = await prepared.execute([id])
+    const roomData = results as RowDataPacket
+    conn.unprepare(query)
+    disconnect(conn)
+    if (roomData.length === 0) {
         throw new ErrorApp({ status: 404, message: 'Error, room does not exist' })
-
-    }else{
+    } else {
         return roomData
     }
 
 }
 
-export const deleteRoom = async (id: any): Promise<RoomInterface | null> => {
-    const roomData = (await roomModel.findByIdAndDelete(id))
-    if (roomData === null){
+export const deleteRoom = async (id: any): Promise<RowDataPacket> => {
+    const conn = await connect()
+    const query = `DELETE FROM rooms where id = ?`
+    const prepared = await conn.prepare(query)
+    const [results, fields] = await prepared.execute([id])
+    const resultHeaders = results as ResultSetHeader
+    const roomData = results as RowDataPacket
+    conn.unprepare(query)
+    disconnect(conn)
+    if (resultHeaders.affectedRows === 0) {
         throw new ErrorApp({ status: 404, message: 'Error, room does not exist' })
-
-    }else{
+    } else {
         return roomData
     }
 
@@ -33,21 +72,21 @@ export const deleteRoom = async (id: any): Promise<RoomInterface | null> => {
 
 export const addRoom = async (room: RoomInterface): Promise<RoomInterface> => {
     const roomData = (await roomModel.create(room))
-    if (roomData === null){
+    if (roomData === null) {
         throw new ErrorApp({ status: 404, message: 'Error, room data does not exist' })
 
-    }else{
+    } else {
         return roomData
     }
 }
 
 export const editRoom = async (id: any, room: RoomInterface): Promise<RoomInterface | null> => {
     const roomData = (await roomModel.findByIdAndUpdate(id, room, { new: true }))
-    if (roomData === null){
+    if (roomData === null) {
         throw new ErrorApp({ status: 404, message: 'Error, room does not exist' })
 
-    }else{
+    } else {
         return roomData
     }
-    
+
 }

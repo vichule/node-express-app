@@ -31,16 +31,16 @@ export const roomPicsQuery = `
 CREATE TABLE IF NOT EXISTS room_photos
 (room_id INT NOT NULL,
 photo_id INT NOT NULL,
-CONSTRAINT room_key FOREIGN KEY (room_id) REFERENCES rooms(id),
-CONSTRAINT photo_key FOREIGN KEY (photo_id) REFERENCES photos(id));
+CONSTRAINT room_key FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE,
+CONSTRAINT photo_key FOREIGN KEY (photo_id) REFERENCES photos(id) ON DELETE CASCADE);
 `
 
 export const roomAmenitiesQuery = `
 CREATE TABLE IF NOT EXISTS room_amenities
 (room_id INT NOT NULL,
 amenities_id INT NOT NULL,
-FOREIGN KEY (room_id) REFERENCES rooms(id),
-FOREIGN KEY (amenities_id) REFERENCES amenities(id));
+FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE,
+FOREIGN KEY (amenities_id) REFERENCES amenities(id) ON DELETE CASCADE);
 `
 
 export const usersQuery = `
@@ -84,5 +84,5 @@ notes VARCHAR(255),
 status ENUM('Check-in', 'Check-out', 'In progress', 'Cancelled') default 'In Progress',
 discount TINYINT NOT NULL,
 room_id INT NOT NULL,
-FOREIGN KEY (room_id) REFERENCES rooms(id));
+FOREIGN KEY (room_id) REFERENCES rooms(id)ON DELETE CASCADE);
 `
