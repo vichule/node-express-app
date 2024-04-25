@@ -53,13 +53,33 @@ export const deleteUser = async (id: any): Promise<RowDataPacket> => {
 
 }
 
-export const addUser = async (user: UserInterface): Promise<UserInterface> => {
+export const addUser = async (user: UserInterface): Promise<RowDataPacket> => {
+    const conn = await connect()
     const hashedPassword = bcrypt.hashSync(user.password, 5)
-    const userData = (await userModel.create({ ...user, password: hashedPassword }))
-    if (userData == null) {
-        throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
+    const query = `INSERT INTO users(first_name, last_name, email, start_date,job,
+        description, photo, status, phone, password) VALUES(?,?,?,?,?,?,?,?,?,?)`
+    const prepared = await conn.prepare(query)
+    const [results, fields] = await prepared.execute([
+        user.first_name,
+        user.last_name,
+        user.email,
+        new Date(user.start_date).toISOString().slice(0, 10),
+        user.job,
+        user.description,
+        user.photo,
+        user.status,
+        user.phone,
+        hashedPassword
+    ])
+    const resultHeaders = results as ResultSetHeader
+    const newUser = await getUser(resultHeaders.insertId) as RowDataPacket
+    conn.unprepare(query)
+    disconnect(conn)
+    
+    if (resultHeaders.affectedRows === 0) {
+        throw new ErrorApp({ status: 404, message: 'Error, user data not exist' })
     } else {
-        return userData
+        return newUser
     }
 }
 

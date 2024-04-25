@@ -54,5 +54,6 @@ app.use("/users", userController);
 
 
 app.use((err: ErrorApp, _req: Request, res: Response, _next: NextFunction) => {
+    console.log(err)
    return res.json({status: err.status || 500, message: err.status ? err.message : 'Internal server error'})
 })
