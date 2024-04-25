@@ -48,7 +48,7 @@ contactController.put('/:id', async (req: Request, res: Response, next: NextFunc
 
 contactController.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dataContact = await editContact((req.params.id), req.body)
+        const dataContact = await addContact((req.body))
         res.json(dataContact)
         
     } catch (error: any) {
