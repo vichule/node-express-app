@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { RoomInterface } from "./Room";
 
 export interface BookingInterface {
     first_name: string,
@@ -7,7 +8,7 @@ export interface BookingInterface {
     check_in: string,
     check_out: string,
     notes: string,
-    room: Types.ObjectId,
+    room: RoomInterface,
     status: string, 
     discount: number
 }

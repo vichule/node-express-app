@@ -2,28 +2,49 @@ import { UserInterface } from "../interfaces/User";
 import { ErrorApp } from "../classes/ErrorApp";
 import { userModel } from "../models/UserModel";
 import bcrypt from 'bcryptjs';
+import mysql, { ResultSetHeader, RowDataPacket } from 'mysql2/promise'
+import { connect, disconnect } from "../util/connection";
 
 
 export const getUsers = async (): Promise<UserInterface[]> => {
-    return (await userModel.find({}))
+    const conn = await connect()
+    
+    const [results, fields] = await conn.execute(`SELECT * FROM users`)
+    const users = results as UserInterface[]
+    disconnect(conn)
+    return users
+
 
 }
 
-export const getUser = async (id: any): Promise<UserInterface | null> => {
-    const userData = (await userModel.findById(id))
-    if (userData === null) {
+export const getUser = async (id: any): Promise<RowDataPacket[]> => {
+    const conn = await connect()
+    const query = `SELECT * FROM users WHERE id = ?`
+    const prepared = await conn.prepare(query)
+    const [results, fields] = await prepared.execute([id])
+    const userData = results as RowDataPacket[]
+    conn.unprepare(query)
+    disconnect(conn)
+    if (userData.length === 0) {
         throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
-
-    } else {
-        return userData
     }
 
+    return userData
+
+
 
 }
 
-export const deleteUser = async (id: any): Promise<UserInterface | null> => {
-    const userData = (await userModel.findByIdAndDelete(id))
-    if (userData == null) {
+export const deleteUser = async (id: any): Promise<RowDataPacket> => {
+    const conn = await connect()
+    const query = `DELETE FROM users where id = ?`
+    const prepared = await conn.prepare(query)
+    const [results, fields] = await prepared.execute([id])
+    const resultHeaders = results as ResultSetHeader
+    const userData = results as RowDataPacket
+    conn.unprepare(query)
+    disconnect(conn)
+    if (resultHeaders.affectedRows === 0) {
         throw new ErrorApp({ status: 404, message: 'Error, user does not exist' })
     } else {
         return userData

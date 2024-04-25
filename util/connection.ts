@@ -5,23 +5,23 @@ dotenv.config()
 
 
     const myPool = mysql.createPool({
-        host: process.env.HOSTNAME,
-        port: Number(process.env.PORT),
-        user: process.env.USER,
-        database: process.env.DBNAME,
-        password: process.env.PASSWRD,
+        host: process.env.SQL_HOSTNAME,
+        port: Number(process.env.SQL_PORT),
+        user: process.env.SQL_USER,
+        database: process.env.SQL_DBNAME,
+        password: process.env.SQL_PASSWRD,
         waitForConnections: true,
         enableKeepAlive: true
     })
 
 
 export const connect = async () =>{
-    try {
-        return await myPool.getConnection()
-    } catch (error) {
-        console.log(error)
-    }
-    
+    // try {
+        
+    // } catch (error) {
+    //     console.log(error)
+    // }
+    return await myPool.getConnection()
 }
 
 export const disconnect = (conn: mysql.PoolConnection) =>{
