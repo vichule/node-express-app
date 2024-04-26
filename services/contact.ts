@@ -78,12 +78,36 @@ export const addContact = async (contact: ContactInterface): Promise<RowDataPack
     }
 }
 
-export const editContact = async (id: any, contact: ContactInterface): Promise<ContactInterface | null> => {
-    const contactData = (await contactModel.findByIdAndUpdate(id, contact, {new:true}))
-    if(contactData === null){
-        throw new ErrorApp({status: 404, message: 'Error, contact does not exist'})
+export const editContact = async (id: any, contact: ContactInterface): Promise<RowDataPacket> => { 
 
-    } else{
-        return contactData
-    }   
+    const conn = await connect()
+    const query = `UPDATE contacts SET
+    first_name = ?, last_name = ?, email = ?,phone = ?,
+    subject = ?,message = ?,date = ?,photo = ?,status = ?
+    WHERE id = ?`
+    const prepared = await conn.prepare(query)
+    const [results, fields] = await prepared.execute([
+        contact.first_name,
+        contact.last_name,
+        contact.email,
+        contact.phone,
+        contact.subject,
+        contact.message,
+        new Date(contact.date).toISOString().slice(0, 10),
+        contact.photo,
+        contact.status,
+        id
+        
+    ])
+    const resultHeaders = results as ResultSetHeader
+    const contactData = results as RowDataPacket
+    const newContact = await getContact(resultHeaders.insertId) as RowDataPacket
+    conn.unprepare(query)
+    disconnect(conn)
+    
+    if (contactData.length === 0) {
+        throw new ErrorApp({ status: 404, message: 'Error, contact doest not exist' })
+    } else {
+        return newContact
+    }
 }

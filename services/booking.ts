@@ -52,7 +52,7 @@ export const getBooking = async (id: any): Promise<RowDataPacket> => {
 }
 
 export const deleteBooking = async (id: any): Promise<RowDataPacket> => {
-    
+
     const conn = await connect()
     const query = `DELETE FROM bookings where id = ?`
     const prepared = await conn.prepare(query)
@@ -70,22 +70,45 @@ export const deleteBooking = async (id: any): Promise<RowDataPacket> => {
 
 }
 
-export const addBooking = async (booking: BookingInterface): Promise<BookingInterface> => {
-        const bookingData = (await bookingModel.create(booking)).populate('room')
-    if(bookingData === null){
-        throw new ErrorApp({ status: 404, message: 'Error, booking does not exist' })
-    }else{
-        return bookingData
-    }
+export const addBooking = async (booking: BookingInterface): Promise<RowDataPacket> => {
+    const conn = await connect()
+    const query = `INSERT INTO bookings(
+        first_name,last_name,
+        order_date,check_in,check_out,notes,status,discount,room_id)
+        VALUES(?,?,?,?,?,?,?,?,?)`
+        const prepared = await conn.prepare(query)
+        console.log(booking)
+        const [results,fields] = await prepared.execute([
+            booking.first_name,
+            booking.last_name,
+            new Date(booking.order_date).toISOString().slice(0, 10),
+            new Date(booking.check_in).toISOString().slice(0, 10),
+            new Date(booking.check_out).toISOString().slice(0, 10),
+            booking.notes,
+            booking.status,
+            booking.discount,
+            booking.room
+        ])
+        const resultHeaders = results as ResultSetHeader
+        const newBooking = await getBooking(resultHeaders.insertId) as RowDataPacket
+        
+        conn.unprepare(query)
+        disconnect(conn)
+
+        if (resultHeaders.affectedRows === 0) {
+            throw new ErrorApp({ status: 404, message: 'Error, booking data not exist' })
+        } else {
+            return newBooking
+        }
 
 }
 
 export const editBooking = async (id: any, booking: BookingInterface): Promise<BookingInterface | null> => {
     const bookingData = (await bookingModel.findByIdAndUpdate(id, booking, { new: true }).populate('room'))
 
-    if(bookingData === null){
+    if (bookingData === null) {
         throw new ErrorApp({ status: 404, message: 'Error, booking does not exist' })
-    }else{
+    } else {
         return bookingData
     }
 

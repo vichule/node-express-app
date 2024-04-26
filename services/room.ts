@@ -70,23 +70,63 @@ export const deleteRoom = async (id: any): Promise<RowDataPacket> => {
 
 }
 
-export const addRoom = async (room: RoomInterface): Promise<RoomInterface> => {
-    const roomData = (await roomModel.create(room))
-    if (roomData === null) {
-        throw new ErrorApp({ status: 404, message: 'Error, room data does not exist' })
+export const addRoom = async (room: RoomInterface): Promise<RowDataPacket> => {
+   
+    const conn = await connect()
+    const query = `INSERT INTO rooms(
+        room_type,room_number,
+        description,price,offer,discount,cancellation,status)
+        VALUES(?,?,?,?,?,?,?,?)`
+        const prepared = await conn.prepare(query)
+        const [results,fields] = await prepared.execute([
+            room.room_type,
+            room.room_number,
+            room.description,
+            room.price,
+            room.offer,
+            room.discount,
+            room.cancellation,
+            room.status
+        ])
+        const resultHeaders = results as ResultSetHeader
+        const newRoom = await getRoom(resultHeaders.insertId) as RowDataPacket
+        conn.unprepare(query)
+        disconnect(conn)
 
-    } else {
-        return roomData
-    }
+        if (resultHeaders.affectedRows === 0) {
+            throw new ErrorApp({ status: 404, message: 'Error, room data not exist' })
+        } else {
+            return newRoom
+        }
 }
 
-export const editRoom = async (id: any, room: RoomInterface): Promise<RoomInterface | null> => {
-    const roomData = (await roomModel.findByIdAndUpdate(id, room, { new: true }))
-    if (roomData === null) {
-        throw new ErrorApp({ status: 404, message: 'Error, room does not exist' })
+export const editRoom = async (id: any, room: RoomInterface): Promise<RowDataPacket> => {
 
+    const conn = await connect()
+    const query = `UPDATE rooms SET
+    room_type = ?, room_number = ?, description = ?,price = ?,
+    offer = ?,discount = ?,cancellation = ?,status = ?
+    WHERE id = ?`
+    const prepared = await conn.prepare(query)
+    const [results,fields] = await prepared.execute([
+        room.room_type,
+        room.room_number,
+        room.description,
+        room.price,
+        room.offer,
+        room.discount,
+        room.cancellation,
+        room.status,
+        id
+    ])
+    const resultHeaders = results as ResultSetHeader
+    const newRoom = await getRoom(resultHeaders.insertId) as RowDataPacket
+    conn.unprepare(query)
+    disconnect(conn)
+
+    if (resultHeaders.affectedRows === 0) {
+        throw new ErrorApp({ status: 404, message: 'Error, room data not exist' })
     } else {
-        return roomData
+        return newRoom
     }
-
 }
