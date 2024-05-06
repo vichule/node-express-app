@@ -28,13 +28,17 @@ export const insertAmenitiesQuery = async (conn: mysql.PoolConnection) => {
 
 export const insertPhotosQuery = async (conn: mysql.PoolConnection) => {
   const photos = [
+    faker.image.urlLoremFlickr({ category: 'hotel,deluxe' }),
+    faker.image.urlLoremFlickr({ category: 'hotel,deluxe,bedroom' }),
     faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
     faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
-    faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
-    faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
-    faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
-    faker.image.urlLoremFlickr({ category: 'hotel,bedroom' }),
-    faker.image.urlLoremFlickr({ category: 'hotel,bedroom' })
+    faker.image.urlLoremFlickr({ category: 'hotel,single' }),
+    faker.image.urlLoremFlickr({ category: 'hotel,single' }),
+    faker.image.urlLoremFlickr({ category: 'hotel,deluxe' }),
+    faker.image.urlLoremFlickr({ category: 'hotel,deluxe' }),
+    faker.image.urlLoremFlickr({ category: 'hotel,deluxe' }),
+    faker.image.urlLoremFlickr({ category: 'hotel,deluxe,bedroom' }),
+    faker.image.urlLoremFlickr({ category: 'hotel,suite' })
   ]
 
   for (let i = 0; i < photos.length; i++) {
@@ -164,10 +168,10 @@ export const insertRoomPhotos = async (conn: mysql.PoolConnection) => {
   const photosId = PResults as RowDataPacket
   const photos = photosId.map((row: any) => row.id)
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < rooms.length; i++) {
     conn.execute(`INSERT INTO room_photos(room_id,photo_id)
     VALUES(
-      '${faker.number.int({ min: 1, max: rooms.length })}',
+      '${i+1}',
       '${faker.number.int({ min: 1, max: photos.length })}'
     )`)
   }

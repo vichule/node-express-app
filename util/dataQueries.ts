@@ -82,7 +82,7 @@ check_in DATE NOT NULL,
 check_out DATE NOT NULL,
 notes VARCHAR(255),
 status ENUM('Check-in', 'Check-out', 'In progress', 'Cancelled') default 'In Progress',
-discount TINYINT NOT NULL,
+discount TINYINT NOT NULL default 0,
 room_id INT NOT NULL,
 FOREIGN KEY (room_id) REFERENCES rooms(id)ON DELETE CASCADE);
 `
