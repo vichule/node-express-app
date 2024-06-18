@@ -17,7 +17,7 @@ authRouter.post("/", async (req: Request, res: Response, next: NextFunction) => 
             throw new ErrorApp({ status: 403, message: "Wrong password" })
         }
         const token = generateAccessToken(user.email)
-        return res.json({token: token, email: user.email, name: user.first_name})
+        return res.json({token: token, email: user.email, name: user.first_name, lastName: user.last_name})
 
     } catch (err: any) {
         next(err)
